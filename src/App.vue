@@ -37,7 +37,7 @@
   bottom: 0;
   background: radial-gradient(
     circle,
-    rgba(2, 0, 36, 0) 0%,
+    rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 1) 100%
   );
 }
