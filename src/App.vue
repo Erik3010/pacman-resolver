@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from "./layouts/Default.vue";
+import DefaultLayout from "@/layouts/Default.vue";
 </script>
 
 <style scoped></style>
