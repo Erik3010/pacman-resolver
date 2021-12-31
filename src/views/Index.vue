@@ -5,7 +5,9 @@
       <p class="mt-2 text-center text-md text-gray-400">
         Resolve your pacman maze
       </p>
-      <Button>Start Resolve</Button>
+      <RouterLink to="/create">
+        <Button>Start Resolve</Button>
+      </RouterLink>
     </section>
     <Footer />
   </main>
