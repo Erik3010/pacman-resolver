@@ -15,7 +15,7 @@
         :id="id"
         type="text"
         v-model="value"
-        placeholder="Row"
+        :placeholder="label ?? ''"
         autocapitalize="off"
         autocomplete="off"
         spellcheck="false"
