@@ -7,9 +7,9 @@ const routes = [
     component: () => import("@/views/Index.vue"),
   },
   {
-    path: "/create",
-    name: "Create",
-    component: () => import("@/views/Create.vue"),
+    path: "/setup",
+    name: "Setup",
+    component: () => import("@/views/Setup.vue"),
   },
 ];
 

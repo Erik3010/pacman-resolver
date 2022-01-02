@@ -5,7 +5,7 @@
       <p class="mt-2 text-center text-md text-gray-400">
         Resolve your pacman maze
       </p>
-      <RouterLink :to="{ name: 'Create' }">
+      <RouterLink :to="{ name: 'Setup' }">
         <Button>Start Resolve</Button>
       </RouterLink>
     </section>
