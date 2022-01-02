@@ -13,7 +13,8 @@
       </div>
       <input
         :id="id"
-        :type="type"
+        type="text"
+        v-model="value"
         placeholder="Row"
         autocapitalize="off"
         autocomplete="off"
@@ -24,13 +25,21 @@
 </template>
 
 <script setup lang="ts">
-type fieldType = "text" | "number" | "date" | "search" | "tel";
+import { ref, watch } from "vue";
+
+type fieldType = "text" | "number";
 
 const props = defineProps<{
   label: string | null;
   id: string;
   type: fieldType;
 }>();
+
+const value = ref("");
+
+watch(value, (val: string) => {
+  props.type === "number" && (value.value = val.replace(/[^\d]/g, ""));
+});
 </script>
 
 <style scoped>
