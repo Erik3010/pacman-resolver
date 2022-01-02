@@ -8,7 +8,7 @@
       {{ label }}
     </label>
     <div class="relative flex items-center group">
-      <div class="absolute left-3">
+      <div class="absolute left-3 input__prefix-icon">
         <slot name="prefix-icon" />
       </div>
       <input
@@ -16,6 +16,7 @@
         type="text"
         v-model="value"
         :placeholder="label ?? ''"
+        class="input__field"
         autocapitalize="off"
         autocomplete="off"
         spellcheck="false"
@@ -43,7 +44,7 @@ watch(value, (val: string) => {
 </script>
 
 <style scoped>
-input {
+.input__field {
   @apply shadow-md
         bg-gray-800
         border-t border-gray-700
@@ -64,5 +65,14 @@ input {
         focus:ring-blue-600
         focus:ring-offset-2
         focus:ring-offset-gray-900;
+}
+.input__prefix-icon {
+  @apply h-5
+          w-5
+          text-gray-400
+          group-focus-within:text-white
+          transition
+          ease-in-out
+          duration-300;
 }
 </style>
