@@ -1,16 +1,12 @@
 <template>
-  <main class="w-full z-10">
-    <section class="max-w-2xl w-full mx-auto">
-      <h1 class="text-center font-bold text-7xl">Pacman Resolver</h1>
-      <p class="mt-2 text-center text-md text-gray-400">
-        Resolve your pacman maze
-      </p>
-      <RouterLink :to="{ name: 'Setup' }">
-        <Button>Start Resolve</Button>
-      </RouterLink>
-    </section>
-    <Footer />
-  </main>
+  <section class="max-w-2xl w-full mx-auto text-center">
+    <h1 class="font-bold text-5xl sm:text-7xl mb-2">Pacman Resolver</h1>
+    <p class="text-md text-gray-400">Resolve your pacman maze</p>
+    <RouterLink :to="{ name: 'Setup' }">
+      <Button>Start Resolve</Button>
+    </RouterLink>
+  </section>
+  <Footer />
 </template>
 
 <script setup lang="ts">

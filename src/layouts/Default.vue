@@ -11,7 +11,9 @@
       content
     "
   >
-    <slot />
+    <main class="w-full z-10">
+      <slot />
+    </main>
   </div>
 </template>
 
