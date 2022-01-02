@@ -15,6 +15,7 @@
       ease-in-out
       duration-300
       hover:shadow-blue-900 hover:shadow-2xl
+      focus:outline-none
       focus:ring-2
       focus:ring-offset-2
       focus:ring-blue-700

@@ -4,7 +4,7 @@
     <p class="text-gray-400 text-sm">Define your board row and column</p>
   </header>
   <form class="flex flex-col items-center mt-16" @submit.prevent>
-    <div class="flex space-x-7">
+    <div class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-7">
       <InputGroup label="Row" id="row" type="number">
         <template #prefix-icon>
           <svg
@@ -58,7 +58,7 @@
         </template>
       </InputGroup>
     </div>
-    <Button>Go Now!</Button>
+    <Button>Start Building Now!</Button>
   </form>
 </template>
 
