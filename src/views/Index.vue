@@ -10,8 +10,9 @@
           text-transparent
           bg-clip-text
         "
-        >Resolver</span
       >
+        Resolver
+      </span>
     </h1>
     <p class="text-md text-gray-400">Resolve your pacman maze</p>
     <RouterLink :to="{ name: 'Setup' }">
