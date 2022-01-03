@@ -40,7 +40,7 @@
         </template>
       </InputGroup>
     </div>
-    <Button>Start Building Now!</Button>
+    <Button :classNames="['mt-12', 'mx-auto']">Start Building Now!</Button>
   </form>
 </template>
 

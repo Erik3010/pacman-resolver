@@ -3,7 +3,7 @@
     <h1 class="font-bold text-5xl sm:text-7xl mb-2">Pacman Resolver</h1>
     <p class="text-md text-gray-400">Resolve your pacman maze</p>
     <RouterLink :to="{ name: 'Setup' }">
-      <Button>Start Resolve</Button>
+      <Button :classNames="['mt-12', 'mx-auto']">Start Resolve</Button>
     </RouterLink>
   </section>
 </template>
