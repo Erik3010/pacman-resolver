@@ -8,12 +8,6 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-router.beforeEach((to, from, next) => {
-  next();
-});
 </script>
 
 <style scoped>
