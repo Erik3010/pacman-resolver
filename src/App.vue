@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <transition mode="in-out" name="zoom">
+    <transition name="zoom" mode="in-out">
       <RouterView />
     </transition>
   </DefaultLayout>
@@ -13,8 +13,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 <style scoped>
 .zoom-enter-active,
 .zoom-leave-active {
-  animation: zoom 0.5s;
-  animation-fill-mode: both;
+  animation: zoom 0.5s both;
 }
 
 .zoom-leave-active {
