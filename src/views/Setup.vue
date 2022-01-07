@@ -43,7 +43,9 @@
           </template>
         </InputGroup>
       </div>
-      <Button :classNames="['mt-12', 'mx-auto']">Start Building Now!</Button>
+      <RouterLink :to="{ name: 'Create' }">
+        <Button :classNames="['mt-12', 'mx-auto']">Start Building Now!</Button>
+      </RouterLink>
     </form>
   </section>
 </template>
