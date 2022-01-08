@@ -1,10 +1,8 @@
 <template>
   <DefaultLayout>
-    <RouterView #default="{ Component }">
-      <transition name="zoom" mode="in-out">
-        <component :is="Component" />
-      </transition>
-    </RouterView>
+    <transition name="zoom" mode="in-out">
+      <RouterView />
+    </transition>
   </DefaultLayout>
 </template>
 
