@@ -27,11 +27,14 @@
       </div>
     </main>
     <Button :classNames="['mx-auto', 'mt-12']">Start!</Button>
+
+    <WheelMenu />
   </section>
 </template>
 
 <script setup lang="ts">
 import Button from "@/components/Button.vue";
+import WheelMenu from "@/components/WheelMenu.vue";
 
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
