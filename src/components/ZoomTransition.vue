@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 const setDuration = (el: Element) => {
   const element = el as HTMLElement;
   element.style.animationDuration = `${props.duration}ms`;
-
-  console.log(element);
 };
 const cleanUpDuration = (el: Element) => {
   const element = el as HTMLElement;
