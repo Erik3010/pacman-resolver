@@ -35,14 +35,15 @@
 <script setup lang="ts">
 import Button from "@/components/Button.vue";
 import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
+
 import { ref } from "vue";
+
+const isOpenWheelMenu = ref(false);
 
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
   target.classList.toggle("box--active");
 };
-
-const isOpenWheelMenu = ref(false);
 
 window.addEventListener("contextmenu", (e) => {
   e.preventDefault();

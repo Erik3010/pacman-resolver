@@ -1,6 +1,6 @@
 <template>
   <ZoomTransition :duration="250">
-    <div class="absolute top-32 left-24" v-if="props.isOpen">
+    <div ref="wheelMenuEl" class="absolute top-32 left-24" v-if="props.isOpen">
       <div class="relative">
         <div
           class="border-2 border-blue-300 bg-gray-900 rounded-full w-52 h-52 grid grid-cols-2 grid-rows-2 transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-gray-700 divide-x divide-y"
@@ -36,7 +36,21 @@
 import WheelMenuItem from "@/components/WheelMenu/WheelMenuItem.vue";
 import ZoomTransition from "@/components/ZoomTransition.vue";
 
+import { ref } from "vue";
+
 const props = defineProps<{
   isOpen: boolean;
 }>();
+
+const wheelMenuEl = ref<HTMLDivElement>();
+
+window.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const target = e.target as HTMLInputElement;
+
+  if (target === wheelMenuEl.value || target.contains(wheelMenuEl.value!)) {
+    console.log("asd");
+  }
+});
 </script>
