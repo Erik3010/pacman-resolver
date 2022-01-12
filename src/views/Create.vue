@@ -28,7 +28,7 @@
     </main>
     <Button :classNames="['mx-auto', 'mt-12']">Start!</Button>
 
-    <WheelMenu :isOpen="isOpenWheelMenu" />
+    <WheelMenu :isOpen="isOpenWheelMenu" @close="closeMenu" />
   </section>
 </template>
 
@@ -49,6 +49,10 @@ window.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   isOpenWheelMenu.value = true;
 });
+
+const closeMenu = () => {
+  isOpenWheelMenu.value = false;
+};
 </script>
 
 <style scoped>

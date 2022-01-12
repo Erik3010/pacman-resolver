@@ -42,15 +42,21 @@ const props = defineProps<{
   isOpen: boolean;
 }>();
 
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
 const wheelMenuEl = ref<HTMLDivElement>();
 
 window.addEventListener("click", (e) => {
+  // to prevent further event bubbling
   e.stopPropagation();
 
-  const target = e.target as HTMLInputElement;
+  if (!props.isOpen) return;
 
-  if (target === wheelMenuEl.value || target.contains(wheelMenuEl.value!)) {
-    console.log("asd");
+  const target = e.target as HTMLInputElement;
+  if (!(wheelMenuEl.value as HTMLInputElement).contains(target)) {
+    emit("close");
   }
 });
 </script>
