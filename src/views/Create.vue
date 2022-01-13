@@ -36,7 +36,7 @@
 import Button from "@/components/Button.vue";
 import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
 
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 
 const isOpenWheelMenu = ref(false);
 
@@ -45,14 +45,21 @@ const boxClickHandler = (e: Event) => {
   target.classList.toggle("box--active");
 };
 
-window.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-  isOpenWheelMenu.value = true;
-});
-
 const closeMenu = () => {
   isOpenWheelMenu.value = false;
 };
+
+const contextMenuHandler = (e: MouseEvent) => {
+  e.preventDefault();
+
+  isOpenWheelMenu.value = true;
+};
+
+window.addEventListener("contextmenu", contextMenuHandler);
+
+onUnmounted(() =>
+  window.removeEventListener("contextmenu", contextMenuHandler)
+);
 </script>
 
 <style scoped>
