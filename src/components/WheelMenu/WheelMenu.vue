@@ -1,6 +1,6 @@
 <template>
   <ZoomTransition :duration="250">
-    <div ref="wheelMenuEl" class="absolute top-32 left-24" v-if="props.isOpen">
+    <div ref="wheelMenuEl" class="absolute top-32 left-24" v-if="isOpen">
       <div class="relative">
         <div
           class="border-2 border-blue-300 bg-gray-900 rounded-full w-52 h-52 grid grid-cols-2 grid-rows-2 transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-gray-700 divide-x divide-y"
@@ -36,15 +36,13 @@
 import WheelMenuItem from "@/components/WheelMenu/WheelMenuItem.vue";
 import ZoomTransition from "@/components/ZoomTransition.vue";
 
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 
-const props = defineProps<{
-  isOpen: boolean;
-}>();
-
-const emit = defineEmits<{
-  (e: "close"): void;
-}>();
+const isOpen = ref(false);
+const menuPosition = ref({
+  x: 0,
+  y: 0,
+});
 
 const wheelMenuEl = ref<HTMLDivElement>();
 
@@ -52,11 +50,24 @@ window.addEventListener("click", (e) => {
   // to prevent further event bubbling
   e.stopPropagation();
 
-  if (!props.isOpen) return;
+  if (!isOpen.value) return;
 
   const target = e.target as HTMLInputElement;
   if (!(wheelMenuEl.value as HTMLInputElement).contains(target)) {
-    emit("close");
+    isOpen.value = false;
   }
 });
+
+const contextMenuHandler = (e: MouseEvent) => {
+  e.preventDefault();
+
+  isOpen.value = true;
+  menuPosition.value = { x: e.offsetX, y: e.offsetY };
+};
+
+window.addEventListener("contextmenu", contextMenuHandler);
+
+onUnmounted(() =>
+  window.removeEventListener("contextmenu", contextMenuHandler)
+);
 </script>
