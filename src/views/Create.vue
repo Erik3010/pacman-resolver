@@ -36,12 +36,7 @@
 import Button from "@/components/Button.vue";
 import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
 
-import { Ref, ref } from "vue";
-// import useContextMenu from "@/hooks/useContextMenu";
-// const main = ref<HTMLDivElement>();
-// const contextMenu = useContextMenu(main as Ref<HTMLDivElement>);
-
-const isOpenWheelMenu = ref(false);
+import { ref } from "vue";
 
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
