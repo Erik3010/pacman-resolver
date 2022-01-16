@@ -4,7 +4,7 @@
       <h1 class="font-bold text-3xl mb-1">Setup your Board</h1>
       <p class="text-gray-400 text-sm">Put the obstacle inside the board</p>
     </header>
-    <main class="flex flex-col items-center">
+    <main class="flex flex-col items-center" ref="main">
       <div class="space-y-3">
         <div class="flex space-x-3">
           <div class="box" @click="boxClickHandler"></div>
@@ -28,7 +28,7 @@
     </main>
     <Button :classNames="['mx-auto', 'mt-12']">Start!</Button>
 
-    <WheelMenu />
+    <WheelMenu :visible="false" />
   </section>
 </template>
 
@@ -36,7 +36,10 @@
 import Button from "@/components/Button.vue";
 import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
 
-import { ref } from "vue";
+import { Ref, ref } from "vue";
+// import useContextMenu from "@/hooks/useContextMenu";
+// const main = ref<HTMLDivElement>();
+// const contextMenu = useContextMenu(main as Ref<HTMLDivElement>);
 
 const isOpenWheelMenu = ref(false);
 
