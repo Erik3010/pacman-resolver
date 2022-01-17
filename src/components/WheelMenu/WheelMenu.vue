@@ -17,8 +17,8 @@
             <img src="@/assets/street.png" class="w-9 h-9" />
           </WheelMenuItem>
           <WheelMenuItem>
-            <img src="@/assets/food2.png" class="w-9 h-9"
-          /></WheelMenuItem>
+            <img src="@/assets/food2.png" class="w-9 h-9" />
+          </WheelMenuItem>
           <WheelMenuItem>
             <img src="@/assets/pacmon.png" class="w-9 h-9" />
           </WheelMenuItem>
