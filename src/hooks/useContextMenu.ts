@@ -1,7 +1,7 @@
-import { ref, computed, Ref, onUnmounted } from "vue";
+import { ref, computed, Ref, onUnmounted, nextTick } from "vue";
 
 export default function useContextMenu(
-  wheelEl: Ref<HTMLDivElement>,
+  wheelElement: Ref<HTMLDivElement | null>,
   initialVisible: Boolean
 ) {
   const isVisible = ref(initialVisible || false);
@@ -15,24 +15,44 @@ export default function useContextMenu(
     };
   });
 
+  const calculateContextMenuPosition = () => {};
+
   const clickHandler = (event: MouseEvent) => {
     event.stopPropagation();
 
     if (!isVisible.value) return;
 
     const target = <HTMLInputElement>event.target;
-    const element = <HTMLInputElement>wheelEl.value;
+    const el = <HTMLInputElement>wheelElement.value;
 
-    !element.contains(target) && (isVisible.value = false);
+    !el.contains(target) && (isVisible.value = false);
   };
 
-  const contextMenuHandler = (event: MouseEvent) => {
+  const contextMenuHandler = async (event: MouseEvent) => {
     event.preventDefault();
 
-    const { offsetX, offsetY } = event;
-    position.value = { top: offsetX, left: offsetY };
+    const targetPosition = {
+      top: event.pageY,
+      left: event.pageX,
+    };
 
     isVisible.value = true;
+
+    await nextTick();
+
+    const el = <HTMLInputElement>wheelElement.value;
+    const height = el.clientHeight;
+    const width = el.clientWidth;
+
+    if (targetPosition.top + height >= window.innerHeight) {
+      targetPosition.top -= height;
+    }
+
+    if (targetPosition.left + width >= window.innerWidth) {
+      targetPosition.left -= width;
+    }
+
+    position.value = targetPosition;
   };
 
   window.addEventListener("click", clickHandler);

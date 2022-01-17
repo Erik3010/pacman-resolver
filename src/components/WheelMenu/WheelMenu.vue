@@ -1,6 +1,11 @@
 <template>
   <ZoomTransition :duration="250">
-    <div ref="wheelMenu" class="absolute top-32 left-24" v-if="isVisible">
+    <div
+      ref="wheelMenu"
+      class="absolute"
+      :style="positionStyle"
+      v-show="isVisible"
+    >
       <div class="relative">
         <div
           class="border-2 border-blue-300 bg-gray-900 rounded-full w-52 h-52 grid grid-cols-2 grid-rows-2 transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-gray-700 divide-x divide-y"
@@ -36,16 +41,13 @@
 import WheelMenuItem from "@/components/WheelMenu/WheelMenuItem.vue";
 import ZoomTransition from "@/components/ZoomTransition.vue";
 
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import useContextMenu from "@/hooks/useContextMenu";
 
 const props = defineProps<{
   visible: Boolean;
 }>();
 
-const wheelMenu = ref<HTMLDivElement>();
-const { isVisible } = useContextMenu(
-  wheelMenu as Ref<HTMLDivElement>,
-  props.visible
-);
+const wheelMenu = ref<HTMLDivElement | null>(null);
+const { isVisible, positionStyle } = useContextMenu(wheelMenu, props.visible);
 </script>
