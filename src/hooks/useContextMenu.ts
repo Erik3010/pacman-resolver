@@ -1,13 +1,23 @@
 import { ref, computed, Ref, onUnmounted, nextTick } from "vue";
 
+interface ContextMenuPosition {
+  top: number;
+  left: number;
+}
+
+interface ContextMenuPositionStyle {
+  top: string;
+  left: string;
+}
+
 export default function useContextMenu(
   wheelElement: Ref<HTMLDivElement | null>,
   initialVisible: Boolean
 ) {
   const isVisible = ref(initialVisible || false);
-  const position = ref({ top: 0, left: 0 });
+  const position = ref<ContextMenuPosition>({ top: 0, left: 0 });
 
-  const positionStyle = computed(() => {
+  const positionStyle = computed<ContextMenuPositionStyle>(() => {
     const { top, left } = position.value;
     return {
       top: `${top}px`,
@@ -15,7 +25,23 @@ export default function useContextMenu(
     };
   });
 
-  const calculateContextMenuPosition = () => {};
+  const calculateContextMenuPosition = (
+    contextMenuPosition: ContextMenuPosition
+  ) => {
+    const el = <HTMLInputElement>wheelElement.value;
+    const height = el.clientHeight;
+    const width = el.clientWidth;
+
+    if (contextMenuPosition.top + height >= window.innerHeight) {
+      contextMenuPosition.top -= height;
+    }
+
+    if (contextMenuPosition.left + width >= window.innerWidth) {
+      contextMenuPosition.left -= width;
+    }
+
+    position.value = contextMenuPosition;
+  };
 
   const clickHandler = (event: MouseEvent) => {
     event.stopPropagation();
@@ -31,28 +57,15 @@ export default function useContextMenu(
   const contextMenuHandler = async (event: MouseEvent) => {
     event.preventDefault();
 
-    const targetPosition = {
-      top: event.pageY,
-      left: event.pageX,
-    };
-
     isVisible.value = true;
 
     await nextTick();
 
-    const el = <HTMLInputElement>wheelElement.value;
-    const height = el.clientHeight;
-    const width = el.clientWidth;
-
-    if (targetPosition.top + height >= window.innerHeight) {
-      targetPosition.top -= height;
-    }
-
-    if (targetPosition.left + width >= window.innerWidth) {
-      targetPosition.left -= width;
-    }
-
-    position.value = targetPosition;
+    const targetPosition = {
+      top: event.pageY,
+      left: event.pageX,
+    };
+    calculateContextMenuPosition(targetPosition);
   };
 
   window.addEventListener("click", clickHandler);
@@ -62,5 +75,9 @@ export default function useContextMenu(
     window.removeEventListener("contextmenu", contextMenuHandler)
   );
 
-  return { isVisible, position, positionStyle };
+  return {
+    isVisible,
+    position,
+    positionStyle,
+  };
 }
