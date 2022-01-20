@@ -15,9 +15,7 @@ export default function useContextMenu(
   initialVisible: Boolean
 ) {
   const isVisible = ref(initialVisible || false);
-  const isForceClose = ref(false);
   const position = ref<ContextMenuPosition>({ top: 0, left: 0 });
-  let tempPosition: ContextMenuPosition | null = null;
 
   const positionStyle = computed<ContextMenuPositionStyle>(() => {
     const { top, left } = position.value;
@@ -25,18 +23,6 @@ export default function useContextMenu(
       top: `${top}px`,
       left: `${left}px`,
     };
-  });
-
-  watch(isForceClose, async (val) => {
-    if (!val) return;
-
-    await nextTick();
-
-    isVisible.value = true;
-    isForceClose.value = false;
-
-    calculateContextMenuPosition(tempPosition!);
-    tempPosition = null;
   });
 
   const calculateContextMenuPosition = (
@@ -76,17 +62,11 @@ export default function useContextMenu(
       left: event.pageX,
     };
 
-    if (isVisible.value) {
-      isVisible.value = false;
-      isForceClose.value = true;
-      tempPosition = targetPosition;
-      return;
-    }
-
-    isVisible.value = true;
+    isVisible.value && (isVisible.value = false);
 
     await nextTick();
 
+    isVisible.value = true;
     calculateContextMenuPosition(targetPosition);
   };
 
