@@ -14,7 +14,8 @@
       <input
         :id="id"
         type="text"
-        v-model="value"
+        :value="modelValue"
+        @input="inputHandler"
         :placeholder="label ?? ''"
         class="input__field"
         autocapitalize="off"
@@ -26,21 +27,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-
 type fieldType = "text" | "number";
 
 const props = defineProps<{
   label: string | null;
   id: string;
   type: fieldType;
+  modelValue: string | number;
 }>();
 
-const value = ref("");
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string): void;
+}>();
 
-watch(value, (val: string) => {
-  props.type === "number" && (value.value = val.replace(/[^\d]/g, ""));
-});
+const inputHandler = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+
+  props.type === "number" &&
+    ((event.target as HTMLInputElement).value = value.replace(/[^\d]/g, ""));
+
+  emit("update:modelValue", (event.target as HTMLInputElement).value);
+};
 </script>
 
 <style scoped>

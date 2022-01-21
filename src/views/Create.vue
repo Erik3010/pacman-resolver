@@ -38,6 +38,10 @@ import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
 
 import { ref } from "vue";
 
+import { useBoard } from "@/store/board";
+
+const boardStore = useBoard();
+
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
   target.classList.toggle("box--active");
