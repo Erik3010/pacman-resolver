@@ -10,10 +10,10 @@ interface ContextMenuPositionStyle {
   left: string;
 }
 
-export default function useContextMenu(
+const useContextMenu = (
   wheelElement: Ref<HTMLDivElement | null>,
   initialVisible: Boolean
-) {
+) => {
   const isVisible = ref(initialVisible || false);
   const position = ref<ContextMenuPosition>({ top: 0, left: 0 });
 
@@ -82,4 +82,6 @@ export default function useContextMenu(
     position,
     positionStyle,
   };
-}
+};
+
+export default useContextMenu;
