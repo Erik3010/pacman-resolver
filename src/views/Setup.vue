@@ -8,7 +8,7 @@
       <div
         class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-7"
       >
-        <InputGroup
+        <TextField
           label="Row"
           id="row"
           type="number"
@@ -29,8 +29,8 @@
               />
             </svg>
           </template>
-        </InputGroup>
-        <InputGroup
+        </TextField>
+        <TextField
           label="Column"
           id="col"
           type="number"
@@ -51,7 +51,7 @@
               />
             </svg>
           </template>
-        </InputGroup>
+        </TextField>
       </div>
       <RouterLink :to="{ name: 'Create' }">
         <Button :classNames="['mt-12', 'mx-auto']">Start Building Now!</Button>
@@ -61,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import InputGroup from "@/components/InputGroup.vue";
-import Button from "@/components/Button.vue";
+import TextField from "@/components/atoms/TextField.vue";
+import Button from "@/components/atoms/Button.vue";
 
 import { ref } from "vue";
 

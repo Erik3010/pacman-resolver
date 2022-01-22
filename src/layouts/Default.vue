@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Footer from "@/components/Footer.vue";
+import Footer from "@/components/organisms/Footer.vue";
 </script>
 
 <style scoped>

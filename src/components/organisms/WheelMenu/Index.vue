@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import WheelMenuItem from "@/components/WheelMenu/WheelMenuItem.vue";
+import WheelMenuItem from "@/components/organisms/WheelMenu/Item.vue";
 import ZoomTransition from "@/components/ZoomTransition.vue";
 
 import { ref } from "vue";

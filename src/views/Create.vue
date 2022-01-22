@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import Button from "@/components/Button.vue";
-import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
+import Button from "@/components/atoms/Button.vue";
+import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
