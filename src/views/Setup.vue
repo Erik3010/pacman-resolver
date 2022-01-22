@@ -8,7 +8,12 @@
       <div
         class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-7"
       >
-        <InputGroup label="Row" id="row" type="number" v-model="boardStore.row">
+        <InputGroup
+          label="Row"
+          id="row"
+          type="number"
+          v-model.number="boardStore.row"
+        >
           <template #prefix-icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +34,7 @@
           label="Column"
           id="col"
           type="number"
-          v-model="boardStore.col"
+          v-model.number="boardStore.col"
         >
           <template #prefix-icon>
             <svg
@@ -60,6 +65,7 @@ import InputGroup from "@/components/InputGroup.vue";
 import Button from "@/components/Button.vue";
 
 import { ref } from "vue";
+
 import { useBoard } from "@/store/board";
 
 const boardStore = useBoard();

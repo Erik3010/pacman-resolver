@@ -37,10 +37,17 @@ import Button from "@/components/Button.vue";
 import WheelMenu from "@/components/WheelMenu/WheelMenu.vue";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 import { useBoard } from "@/store/board";
 
+const router = useRouter();
 const boardStore = useBoard();
+
+if (!boardStore.row || !boardStore.col) {
+  alert("Please input valid Row and Column");
+  router.push({ name: "Setup" });
+}
 
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
