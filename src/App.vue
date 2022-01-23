@@ -10,6 +10,6 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import ZoomTransition from "@/components/ZoomTransition.vue";
+import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 import Notification from "@/components/organisms/Notification.vue";
 </script>

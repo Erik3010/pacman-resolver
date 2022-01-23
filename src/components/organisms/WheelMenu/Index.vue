@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import WheelMenuItem from "@/components/organisms/WheelMenu/Item.vue";
-import ZoomTransition from "@/components/ZoomTransition.vue";
+import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 
 import { ref } from "vue";
 import useContextMenu from "@/hooks/useContextMenu";
