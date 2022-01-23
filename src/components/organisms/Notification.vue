@@ -1,14 +1,16 @@
 <template>
   <div
     class="fixed top-8 right-8 bg-gray-800 rounded-md shadow-2xl border border-gray-700 inline-flex items-start p-4"
+    v-if="notificationStore.isShow"
   >
     <div class="mr-3">
-      <!-- <svg
+      <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-green-600"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        v-if="notificationStore.status === NotificationStatus.SUCCESS"
       >
         <path
           stroke-linecap="round"
@@ -16,13 +18,14 @@
           stroke-width="2"
           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
         />
-      </svg> -->
+      </svg>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-red-500"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        v-else-if="notificationStore.status === NotificationStatus.ERROR"
       >
         <path
           stroke-linecap="round"
@@ -33,15 +36,16 @@
       </svg>
     </div>
     <div>
-      <h4 class="text-base text-white font-medium mb-0.5">
-        Successfully saved
+      <h4 class="text-base text-white font-medium">
+        {{ notificationStore.title }}
       </h4>
-      <p class="text-gray-400 text-sm">
-        Anyone with a link can now view this file.
+      <p class="text-gray-400 text-sm mt-0.5" v-if="notificationStore.subtitle">
+        {{ notificationStore.subtitle }}
       </p>
     </div>
-    <div
-      class="group ml-8 cursor-pointer p-1.5 hover:bg-gray-700 rounded-md transition duration-150"
+    <button
+      class="group ml-8 cursor-pointer p-0.5 hover:bg-gray-700 rounded-md transition duration-150 focus:outline-none"
+      @click="notificationStore.hide"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +61,13 @@
           d="M6 18L18 6M6 6l12 12"
         />
       </svg>
-    </div>
+    </button>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useNotification } from "@/store/notification";
+import { NotificationStatus } from "@/store/notification";
+
+const notificationStore = useNotification();
+</script>

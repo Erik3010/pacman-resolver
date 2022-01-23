@@ -44,11 +44,6 @@ import { useBoard } from "@/store/board";
 const router = useRouter();
 const boardStore = useBoard();
 
-if (!boardStore.row || !boardStore.col) {
-  alert("Please input valid Row and Column");
-  router.push({ name: "Setup" });
-}
-
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
   target.classList.toggle("box--active");

@@ -53,9 +53,9 @@
           </template>
         </TextField>
       </div>
-      <RouterLink :to="{ name: 'Create' }">
-        <Button :classNames="['mt-12', 'mx-auto']">Start Building Now!</Button>
-      </RouterLink>
+      <Button @click="redirectToCreatePage" :classNames="['mt-12', 'mx-auto']">
+        Start Building Now!
+      </Button>
     </form>
   </section>
 </template>
@@ -65,8 +65,26 @@ import TextField from "@/components/atoms/TextField.vue";
 import Button from "@/components/atoms/Button.vue";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 import { useBoard } from "@/store/board";
+import { useNotification, NotificationStatus } from "@/store/notification";
 
+const router = useRouter();
 const boardStore = useBoard();
+const notificationStore = useNotification();
+
+const redirectToCreatePage = () => {
+  if (!boardStore.row || !boardStore.col) {
+    notificationStore.show({
+      status: NotificationStatus.ERROR,
+      title: "Invalid Row and Column",
+      subtitle: "Please input valid number in Row and Column field!",
+      duration: 4500,
+    });
+    return;
+  }
+
+  router.push({ name: "Create" });
+};
 </script>
