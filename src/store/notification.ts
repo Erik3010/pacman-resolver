@@ -11,6 +11,7 @@ interface RootState {
   title: string;
   subtitle: string | null;
   duration: number;
+  timerHandler: ReturnType<typeof setTimeout> | null;
 }
 
 export const useNotification = defineStore("notification", {
@@ -20,6 +21,7 @@ export const useNotification = defineStore("notification", {
     title: "",
     subtitle: null,
     duration: 2000,
+    timerHandler: null,
   }),
   actions: {
     show({
@@ -39,10 +41,12 @@ export const useNotification = defineStore("notification", {
       this.title = title;
       subtitle && (this.subtitle = subtitle);
 
-      setTimeout(() => this.hide(), duration ?? this.duration);
+      this.timerHandler = setTimeout(this.hide, duration ?? this.duration);
     },
     hide() {
       this.isShow = false;
+
+      this.timerHandler && clearTimeout(this.timerHandler);
     },
   },
 });
