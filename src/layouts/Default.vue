@@ -2,11 +2,11 @@
   <div
     class="relative min-h-screen w-full flex flex-col justify-center items-center text-white bg-main content"
   >
-    <main class="w-full z-10">
+    <main class="w-full z-10 py-20">
       <slot />
     </main>
+    <Footer />
   </div>
-  <Footer />
 </template>
 
 <script setup lang="ts">

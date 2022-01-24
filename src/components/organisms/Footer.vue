@@ -1,5 +1,7 @@
 <template>
-  <footer class="w-full text-center fixed bottom-8 text-gray-500 text-sm">
+  <footer
+    class="w-full text-center absolute bottom-8 text-gray-500 z-50 text-sm"
+  >
     Build by
     <a
       target="_blank"

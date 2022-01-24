@@ -1,7 +1,7 @@
 <template>
   <SlideTransition>
     <div
-      class="fixed top-8 right-8 bg-gray-800 rounded-md shadow-2xl border border-gray-700 inline-flex items-start p-4"
+      class="fixed z-50 top-8 right-8 bg-gray-800 rounded-md shadow-2xl border border-gray-700 inline-flex items-start p-4"
       v-if="notificationStore.isShow"
     >
       <div class="mr-3">
