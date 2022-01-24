@@ -6,23 +6,12 @@
     </header>
     <main class="flex flex-col items-center" ref="main">
       <div class="space-y-3">
-        <div class="flex space-x-3">
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-        </div>
-        <div class="flex space-x-3">
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-        </div>
-        <div class="flex space-x-3">
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
-          <div class="box" @click="boxClickHandler"></div>
+        <div class="flex space-x-3" v-for="column in boardStore.col">
+          <div
+            v-for="row in boardStore.row"
+            class="box"
+            @click="boxClickHandler"
+          ></div>
         </div>
       </div>
     </main>
@@ -40,9 +29,21 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { useBoard } from "@/store/board";
+import { useNotification, NotificationStatus } from "@/store/notification";
 
 const router = useRouter();
 const boardStore = useBoard();
+const notificationStore = useNotification();
+
+if (!boardStore.row || !boardStore.col) {
+  notificationStore.show({
+    status: NotificationStatus.ERROR,
+    title: "Invalid Row and Column",
+    subtitle: "Invalid Row and Column you will be redirect back",
+    duration: 4500,
+  });
+  router.push({ name: "Setup" });
+}
 
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
