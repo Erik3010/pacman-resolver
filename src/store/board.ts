@@ -6,4 +6,7 @@ export const useBoard = defineStore("board", {
     col: 0,
     board: [],
   }),
+  actions: {
+    generateBoard() {},
+  },
 });
