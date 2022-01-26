@@ -64,7 +64,6 @@
 import TextField from "@/components/atoms/TextField.vue";
 import Button from "@/components/atoms/Button.vue";
 
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { useBoard } from "@/store/board";
