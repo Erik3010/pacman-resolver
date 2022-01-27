@@ -25,7 +25,6 @@
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { useBoard } from "@/store/board";
