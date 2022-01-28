@@ -15,7 +15,9 @@
         </div>
       </div>
     </main>
-    <Button :classNames="['mx-auto', 'mt-12']">Start!</Button>
+    <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve"
+      >Start!</Button
+    >
 
     <WheelMenu :visible="false" />
   </section>
@@ -47,6 +49,10 @@ if (!boardStore.row || !boardStore.col) {
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
   target.classList.toggle("box--active");
+};
+
+const startResolve = () => {
+  console.log(boardStore.generateBoard());
 };
 </script>
 

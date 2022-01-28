@@ -7,6 +7,10 @@ export const useBoard = defineStore("board", {
     board: [],
   }),
   actions: {
-    generateBoard() {},
+    generateBoard() {
+      return Array(this.row)
+        .fill([])
+        .map((row) => Array(this.col).fill(0));
+    },
   },
 });
