@@ -6,18 +6,16 @@
     </header>
     <main class="flex flex-col items-center" ref="main">
       <div class="space-y-3">
-        <div class="flex space-x-3" v-for="column in boardStore.col">
-          <div
-            v-for="row in boardStore.row"
-            class="box"
-            @click="boxClickHandler"
-          ></div>
+        <div class="flex space-x-3" v-for="row in boardStore.board">
+          <div v-for="column in row" class="box" @click="boxClickHandler">
+            {{ column }}
+          </div>
         </div>
       </div>
     </main>
-    <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve"
-      >Start!</Button
-    >
+    <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
+      Start!
+    </Button>
 
     <WheelMenu :visible="false" />
   </section>
@@ -27,14 +25,19 @@
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { useBoard } from "@/store/board";
+import { useBoard, BoardItem } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
+
+type Coordinate = [number, number];
+
+const selectedBox = ref<Coordinate[]>([]);
 
 if (!boardStore.row || !boardStore.col) {
   notificationStore.show({
@@ -46,13 +49,17 @@ if (!boardStore.row || !boardStore.col) {
   router.push({ name: "Setup" });
 }
 
+boardStore.generateBoard();
+
 const boxClickHandler = (e: Event) => {
   const target = e.target as HTMLInputElement;
   target.classList.toggle("box--active");
 };
 
 const startResolve = () => {
-  console.log(boardStore.generateBoard());
+  boardStore.setBoardItem(0, 0, BoardItem.STREET);
+
+  console.log(boardStore.board);
 };
 </script>
 
