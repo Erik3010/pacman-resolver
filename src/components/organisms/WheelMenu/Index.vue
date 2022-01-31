@@ -10,21 +10,22 @@
         <div
           class="border-2 border-blue-300 bg-gray-900 rounded-full w-52 h-52 grid grid-cols-2 grid-rows-2 transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-gray-700 divide-x divide-y"
         >
-          <WheelMenuItem>
+          <WheelMenuItem @click="wheelItemHandler(BoardItem.WALL)">
             <img src="@/assets/wall.png" class="w-9 h-9" />
           </WheelMenuItem>
-          <WheelMenuItem>
+          <WheelMenuItem @click="wheelItemHandler(BoardItem.STREET)">
             <img src="@/assets/street.png" class="w-9 h-9" />
           </WheelMenuItem>
-          <WheelMenuItem>
+          <WheelMenuItem @click="wheelItemHandler(BoardItem.FOOD)">
             <img src="@/assets/food.png" class="w-9 h-9" />
           </WheelMenuItem>
-          <WheelMenuItem>
+          <WheelMenuItem @click="wheelItemHandler(BoardItem.PACMON)">
             <img src="@/assets/pacmon.png" class="w-9 h-9" />
           </WheelMenuItem>
         </div>
         <div
           class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 w-20 h-20 flex justify-center items-center p-1.5 shadow-md"
+          @click="wheelItemHandler(BoardItem.EMPTY)"
         >
           <div
             class="rounded-full w-full h-full bg-gray-800 hover:bg-gray-700 cursor-pointer flex justify-center items-center text-2xl"
@@ -44,10 +45,18 @@ import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 import { ref } from "vue";
 import useContextMenu from "@/hooks/useContextMenu";
 
+import { useBoard, BoardItem } from "@/store/board";
+
 const props = defineProps<{
   visible: Boolean;
 }>();
 
 const wheelMenu = ref<HTMLDivElement | null>(null);
 const { isVisible, positionStyle } = useContextMenu(wheelMenu, props.visible);
+
+const boardStore = useBoard();
+
+const wheelItemHandler = (item: BoardItem) => {
+  boardStore.setBulkBoardItem(item);
+};
 </script>

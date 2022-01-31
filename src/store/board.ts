@@ -29,6 +29,11 @@ export const useBoard = defineStore("board", {
     setBoardItem({ y, x }: Coordinate, item: BoardItem) {
       this.board[y][x] = item;
     },
+    setBulkBoardItem(item: BoardItem) {
+      this.selectedCoorindate.forEach((coordinate) =>
+        this.setBoardItem(coordinate, item)
+      );
+    },
     setSelectedCoordinate(payload: Coordinate) {
       this.selectedCoorindate.push(payload);
     },

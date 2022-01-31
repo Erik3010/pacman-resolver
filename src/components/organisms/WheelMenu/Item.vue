@@ -1,5 +1,8 @@
 <template>
-  <div class="relative cursor-pointer hover:bg-gray-800 transition">
+  <div
+    class="relative cursor-pointer hover:bg-gray-800 transition"
+    @click="emit('click')"
+  >
     <div
       class="absolute flex justify-center items-center w-full h-full transform -rotate-45 text-2xl select-none"
     >
@@ -7,3 +10,9 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: "click"): void;
+}>();
+</script>
