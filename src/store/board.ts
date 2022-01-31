@@ -8,22 +8,34 @@ export enum BoardItem {
   EMPTY = "",
 }
 
+export interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export const useBoard = defineStore("board", {
   state: () => ({
     row: 0,
     col: 0,
     board: <Array<Array<BoardItem>>>[],
+    selectedCoorindate: <Coordinate[]>[],
   }),
   actions: {
     generateBoard() {
       this.board = Array(this.row)
         .fill([])
-        .map((row) => Array(this.col).fill(BoardItem.EMPTY));
+        .map(() => Array(this.col).fill(BoardItem.EMPTY));
     },
-    setBoardItem(row: number, col: number, item: BoardItem) {
-      this.board[row][col] = item;
-
-      console.log(row, col);
+    setBoardItem({ y, x }: Coordinate, item: BoardItem) {
+      this.board[y][x] = item;
+    },
+    setSelectedCoordinate(payload: Coordinate) {
+      this.selectedCoorindate.push(payload);
+    },
+    isSelectedCoordinate(payload: Coordinate) {
+      return this.selectedCoorindate.some(
+        (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
+      );
     },
   },
 });

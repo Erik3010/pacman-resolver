@@ -6,9 +6,21 @@
     </header>
     <main class="flex flex-col items-center" ref="main">
       <div class="space-y-3">
-        <div class="flex space-x-3" v-for="row in boardStore.board">
-          <div v-for="column in row" class="box" @click="boxClickHandler">
-            {{ column }}
+        <div class="flex space-x-3" v-for="(row, y) in boardStore.board">
+          <div
+            v-for="(column, x) in row"
+            :class="[
+              'box',
+              { 'box--active': boardStore.isSelectedCoordinate({ y, x }) },
+            ]"
+            @click="boxClickHandler($event, { y, x })"
+          >
+            <img
+              v-if="!!column"
+              class="w-8 h-8"
+              :src="boardItemImage[column]"
+              :alt="column"
+            />
           </div>
         </div>
       </div>
@@ -25,19 +37,20 @@
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import { useBoard, BoardItem } from "@/store/board";
+import { useBoard, BoardItem, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
+
+import Street from "@/assets/street.png";
+import Food from "@/assets/food.png";
+import Pacmon from "@/assets/pacmon.png";
+import Wall from "@/assets/wall.png";
 
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
-
-type Coordinate = [number, number];
-
-const selectedBox = ref<Coordinate[]>([]);
 
 if (!boardStore.row || !boardStore.col) {
   notificationStore.show({
@@ -51,21 +64,28 @@ if (!boardStore.row || !boardStore.col) {
 
 boardStore.generateBoard();
 
-const boxClickHandler = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  target.classList.toggle("box--active");
+const boardItemImage = {
+  [BoardItem.STREET]: Street,
+  [BoardItem.FOOD]: Food,
+  [BoardItem.PACMON]: Pacmon,
+  [BoardItem.WALL]: Wall,
+};
+
+const boxClickHandler = (e: Event, coordinate: Coordinate) => {
+  boardStore.setSelectedCoordinate(coordinate);
+  boardStore.setBoardItem(coordinate, BoardItem.STREET);
+
+  console.log(boardStore.selectedCoorindate);
 };
 
 const startResolve = () => {
-  boardStore.setBoardItem(0, 0, BoardItem.STREET);
-
   console.log(boardStore.board);
 };
 </script>
 
 <style scoped>
 .box {
-  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg cursor-pointer transition duration-300 ease-in-out;
+  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-center;
 }
 .box--active {
   @apply border-2 border-blue-600 scale-110 bg-main;
