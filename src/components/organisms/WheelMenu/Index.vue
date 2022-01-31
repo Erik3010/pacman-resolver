@@ -52,11 +52,18 @@ const props = defineProps<{
 }>();
 
 const wheelMenu = ref<HTMLDivElement | null>(null);
-const { isVisible, positionStyle } = useContextMenu(wheelMenu, props.visible);
+const { isVisible, positionStyle, closeContextMenu } = useContextMenu(
+  wheelMenu,
+  props.visible
+);
 
 const boardStore = useBoard();
 
 const wheelItemHandler = (item: BoardItem) => {
   boardStore.setBulkBoardItem(item);
+
+  boardStore.clearSelectedCoordinate();
+
+  closeContextMenu();
 };
 </script>

@@ -73,9 +73,6 @@ const boardItemImage = {
 
 const boxClickHandler = (e: Event, coordinate: Coordinate) => {
   boardStore.setSelectedCoordinate(coordinate);
-  // boardStore.setBoardItem(coordinate, BoardItem.STREET);
-
-  console.log(boardStore.selectedCoorindate);
 };
 
 const startResolve = () => {

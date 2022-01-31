@@ -42,5 +42,8 @@ export const useBoard = defineStore("board", {
         (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
       );
     },
+    clearSelectedCoordinate() {
+      this.selectedCoorindate = [];
+    },
   },
 });

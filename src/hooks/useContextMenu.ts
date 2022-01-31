@@ -43,6 +43,8 @@ const useContextMenu = (
     position.value = contextMenuPosition;
   };
 
+  const closeContextMenu = () => (isVisible.value = false);
+
   const clickHandler = (event: MouseEvent) => {
     event.stopPropagation();
 
@@ -51,7 +53,7 @@ const useContextMenu = (
     const target = <HTMLInputElement>event.target;
     const el = <HTMLInputElement>wheelElement.value;
 
-    !el.contains(target) && (isVisible.value = false);
+    !el.contains(target) && closeContextMenu();
   };
 
   const contextMenuHandler = async (event: MouseEvent) => {
@@ -62,7 +64,7 @@ const useContextMenu = (
       left: event.pageX,
     };
 
-    isVisible.value && (isVisible.value = false);
+    isVisible.value && closeContextMenu();
 
     await nextTick();
 
@@ -81,6 +83,7 @@ const useContextMenu = (
     isVisible,
     position,
     positionStyle,
+    closeContextMenu,
   };
 };
 
