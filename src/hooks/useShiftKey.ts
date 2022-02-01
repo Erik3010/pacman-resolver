@@ -4,7 +4,7 @@ const useShiftKey = () => {
   const isShiftKeyPressed = ref(false);
 
   const keyDownHandler = (event: KeyboardEvent) => {
-    console.log(event.shiftKey);
+    isShiftKeyPressed.value = event.shiftKey;
   };
 
   onMounted(() => window.addEventListener("keydown", keyDownHandler));

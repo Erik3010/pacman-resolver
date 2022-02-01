@@ -37,9 +37,10 @@
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
+import useShiftKey from "@/hooks/useShiftKey";
 import { useBoard, BoardItem, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
@@ -51,6 +52,7 @@ import Wall from "@/assets/wall.png";
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
+const { isShiftKeyPressed } = useShiftKey();
 
 if (!boardStore.row || !boardStore.col) {
   notificationStore.show({
@@ -72,7 +74,17 @@ const boardItemImage = {
 };
 
 const boxClickHandler = (e: Event, coordinate: Coordinate) => {
+  const lastSelectedCoordinate =
+    boardStore.selectedCoorindate[boardStore.selectedCoorindate.length - 1] ??
+    null;
+  console.log(lastSelectedCoordinate);
+
   boardStore.setSelectedCoordinate(coordinate);
+
+  if (isShiftKeyPressed.value && lastSelectedCoordinate) {
+    // boardStore.setSelectedCoordinate(lastSelectedCoordinate);
+  }
+  //console.log(isShiftKeyPressed.value);
 };
 
 const startResolve = () => {
