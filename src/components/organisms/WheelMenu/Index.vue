@@ -6,7 +6,7 @@
       :style="positionStyle"
       v-show="isVisible"
     >
-      <div class="relative">
+      <div class="relative select-none">
         <div
           class="border-2 border-blue-300 bg-gray-900 rounded-full w-52 h-52 grid grid-cols-2 grid-rows-2 transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-gray-700 divide-x divide-y"
         >

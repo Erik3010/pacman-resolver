@@ -11,6 +11,7 @@
             v-for="(column, x) in row"
             :class="[
               'box',
+              'select-none',
               { 'box--active': boardStore.isInSelectedCoordinate({ y, x }) },
             ]"
             @click="boxClickHandler({ y, x })"
@@ -74,6 +75,13 @@ const boardItemImage = {
 };
 
 const boxClickHandler = (coordinate: Coordinate) => {
+  if (boardStore.isInSelectedCoordinate(coordinate)) {
+    boardStore.selectedCoorindate = boardStore.selectedCoorindate.filter(
+      (c) => JSON.stringify(c) !== JSON.stringify(coordinate)
+    );
+    return;
+  }
+
   if (isShiftKeyPressed.value) {
     boardStore.setBulkSelectedCoordinate(coordinate);
   } else {
