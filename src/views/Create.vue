@@ -11,9 +11,9 @@
             v-for="(column, x) in row"
             :class="[
               'box',
-              { 'box--active': boardStore.isSelectedCoordinate({ y, x }) },
+              { 'box--active': boardStore.isInSelectedCoordinate({ y, x }) },
             ]"
-            @click="boxClickHandler($event, { y, x })"
+            @click="boxClickHandler({ y, x })"
           >
             <img
               v-if="!!column"
@@ -73,28 +73,11 @@ const boardItemImage = {
   [BoardItem.WALL]: Wall,
 };
 
-const boxClickHandler = (e: Event, coordinate: Coordinate) => {
-  const lastSelectedCoordinate =
-    boardStore.selectedCoorindate[boardStore.selectedCoorindate.length - 1] ??
-    null;
-
-  boardStore.setSelectedCoordinate(coordinate);
-
-  if (isShiftKeyPressed.value && lastSelectedCoordinate) {
-    const start = {
-      y: Math.min(lastSelectedCoordinate.y, coordinate.y),
-      x: Math.min(lastSelectedCoordinate.x, coordinate.x),
-    };
-    const end = {
-      y: Math.max(lastSelectedCoordinate.y, coordinate.y),
-      x: Math.max(lastSelectedCoordinate.x, coordinate.x),
-    };
-
-    for (let y = start.y; y <= end.y; y++) {
-      for (let x = start.x; x <= end.x; x++) {
-        boardStore.setSelectedCoordinate({ y, x });
-      }
-    }
+const boxClickHandler = (coordinate: Coordinate) => {
+  if (isShiftKeyPressed.value) {
+    boardStore.setBulkSelectedCoordinate(coordinate);
+  } else {
+    boardStore.setSelectedCoordinate(coordinate);
   }
 };
 

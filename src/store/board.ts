@@ -26,18 +26,41 @@ export const useBoard = defineStore("board", {
         .fill([])
         .map(() => Array(this.col).fill(BoardItem.EMPTY));
     },
-    setBoardItem({ y, x }: Coordinate, item: BoardItem) {
-      this.board[y][x] = item;
+    setBoardItem({ y, x }: Coordinate, payload: BoardItem) {
+      this.board[y][x] = payload;
     },
-    setBulkBoardItem(item: BoardItem) {
+    setBulkBoardItem(payload: BoardItem) {
       this.selectedCoorindate.forEach((coordinate) =>
-        this.setBoardItem(coordinate, item)
+        this.setBoardItem(coordinate, payload)
       );
     },
-    setSelectedCoordinate(payload: Coordinate) {
-      this.selectedCoorindate.push(payload);
+    setSelectedCoordinate(coordinate: Coordinate) {
+      this.selectedCoorindate.push(coordinate);
     },
-    isSelectedCoordinate(payload: Coordinate) {
+    setBulkSelectedCoordinate(coordinate: Coordinate) {
+      const lastSelectedCoordinate =
+        this.selectedCoorindate[this.selectedCoorindate.length - 1] ?? null;
+
+      if (!lastSelectedCoordinate) return;
+
+      const start = {
+        y: Math.min(lastSelectedCoordinate.y, coordinate.y),
+        x: Math.min(lastSelectedCoordinate.x, coordinate.x),
+      };
+      const end = {
+        y: Math.max(lastSelectedCoordinate.y, coordinate.y),
+        x: Math.max(lastSelectedCoordinate.x, coordinate.x),
+      };
+
+      for (let y = start.y; y <= end.y; y++) {
+        for (let x = start.x; x <= end.x; x++) {
+          if (this.isInSelectedCoordinate({ y, x })) continue;
+
+          this.setSelectedCoordinate({ y, x });
+        }
+      }
+    },
+    isInSelectedCoordinate(payload: Coordinate) {
       return this.selectedCoorindate.some(
         (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
       );
