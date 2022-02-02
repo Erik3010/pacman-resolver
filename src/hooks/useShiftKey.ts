@@ -3,12 +3,18 @@ import { ref, onMounted, onUnmounted } from "vue";
 const useShiftKey = () => {
   const isShiftKeyPressed = ref(false);
 
-  const keyDownHandler = (event: KeyboardEvent) => {
+  const shiftKeyHandler = (event: KeyboardEvent) => {
     isShiftKeyPressed.value = event.shiftKey;
   };
 
-  onMounted(() => window.addEventListener("keydown", keyDownHandler));
-  onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
+  onMounted(() => {
+    window.addEventListener("keyup", shiftKeyHandler);
+    window.addEventListener("keydown", shiftKeyHandler);
+  });
+  onUnmounted(() => {
+    window.removeEventListener("keyup", shiftKeyHandler);
+    window.removeEventListener("keydown", shiftKeyHandler);
+  });
 
   return { isShiftKeyPressed };
 };

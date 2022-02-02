@@ -15,8 +15,8 @@ export interface Coordinate {
 
 export const useBoard = defineStore("board", {
   state: () => ({
-    row: 0,
-    col: 0,
+    row: 5,
+    col: 5,
     board: <Array<Array<BoardItem>>>[],
     selectedCoorindate: <Coordinate[]>[],
   }),

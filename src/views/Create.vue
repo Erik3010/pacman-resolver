@@ -77,14 +77,25 @@ const boxClickHandler = (e: Event, coordinate: Coordinate) => {
   const lastSelectedCoordinate =
     boardStore.selectedCoorindate[boardStore.selectedCoorindate.length - 1] ??
     null;
-  console.log(lastSelectedCoordinate);
 
   boardStore.setSelectedCoordinate(coordinate);
 
   if (isShiftKeyPressed.value && lastSelectedCoordinate) {
-    // boardStore.setSelectedCoordinate(lastSelectedCoordinate);
+    const start = {
+      y: Math.min(lastSelectedCoordinate.y, coordinate.y),
+      x: Math.min(lastSelectedCoordinate.x, coordinate.x),
+    };
+    const end = {
+      y: Math.max(lastSelectedCoordinate.y, coordinate.y),
+      x: Math.max(lastSelectedCoordinate.x, coordinate.x),
+    };
+
+    for (let y = start.y; y <= end.y; y++) {
+      for (let x = start.x; x <= end.x; x++) {
+        boardStore.setSelectedCoordinate({ y, x });
+      }
+    }
   }
-  //console.log(isShiftKeyPressed.value);
 };
 
 const startResolve = () => {
