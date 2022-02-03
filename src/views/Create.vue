@@ -38,7 +38,6 @@
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 
-import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import useShiftKey from "@/hooks/useShiftKey";
@@ -76,9 +75,7 @@ const boardItemImage = {
 
 const boxClickHandler = (coordinate: Coordinate) => {
   if (boardStore.isInSelectedCoordinate(coordinate)) {
-    boardStore.selectedCoorindate = boardStore.selectedCoorindate.filter(
-      (c) => JSON.stringify(c) !== JSON.stringify(coordinate)
-    );
+    boardStore.removeSelectedCoordinate(coordinate);
     return;
   }
 

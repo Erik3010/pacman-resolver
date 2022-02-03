@@ -65,6 +65,17 @@ export const useBoard = defineStore("board", {
         (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
       );
     },
+    getSelectedCoordinateIndex(payload: Coordinate) {
+      return this.selectedCoorindate.findIndex(
+        (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
+      );
+    },
+    removeSelectedCoordinate(payload: Coordinate) {
+      this.selectedCoorindate.splice(
+        this.getSelectedCoordinateIndex(payload),
+        1
+      );
+    },
     clearSelectedCoordinate() {
       this.selectedCoorindate = [];
     },
