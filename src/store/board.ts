@@ -13,11 +13,13 @@ export interface Coordinate {
   y: number;
 }
 
+export type Board = Array<Array<BoardItem>>;
+
 export const useBoard = defineStore("board", {
   state: () => ({
     row: 5,
     col: 5,
-    board: <Array<Array<BoardItem>>>[],
+    board: <Board>[],
     selectedCoorindate: <Coordinate[]>[],
   }),
   actions: {

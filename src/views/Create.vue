@@ -49,6 +49,8 @@ import Food from "@/assets/food.png";
 import Pacmon from "@/assets/pacmon.png";
 import Wall from "@/assets/wall.png";
 
+import pathfinding from "@/utils/pathfinding";
+
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
@@ -87,7 +89,7 @@ const boxClickHandler = (coordinate: Coordinate) => {
 };
 
 const startResolve = () => {
-  console.log(boardStore.board);
+  pathfinding(boardStore.board);
 };
 </script>
 
