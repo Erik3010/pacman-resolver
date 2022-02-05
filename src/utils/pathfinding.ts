@@ -25,19 +25,31 @@ const pathfinding = (payload: Board) => {
       );
   };
 
+  const getPacmonInitialPosition = (): Coordinate | null => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] === BoardItem.PACMON) return [i, j];
+      }
+    }
+
+    return null;
+  };
+
   const traverse = (initialPosition: Coordinate) => {
     const stack = [];
     const visited = new Set();
 
     const queue = [initialPosition];
 
-    // while (queue.length) {
-    //   const current = queue.shift();
-    //   visited.add(JSON.stringify(current));
-    // }
+    while (queue.length) {
+      const current = queue.shift();
+      visited.add(JSON.stringify(current));
+    }
+
+    return visited;
   };
 
-  console.log(board);
+  console.log(traverse(getPacmonInitialPosition()!));
 };
 
 export default pathfinding;
