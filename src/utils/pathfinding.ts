@@ -1,10 +1,10 @@
 import { Board, BoardItem } from "@/store/board";
 
 type Coordinate = [number, number];
-interface Stack {
+type Stack = {
   from: Coordinate;
   to: Coordinate;
-}
+};
 
 const pathfinding = (payload: Board) => {
   const board = JSON.parse(JSON.stringify(payload));
@@ -20,13 +20,13 @@ const pathfinding = (payload: Board) => {
     const validRoutes = () =>
       curY >= 0 && curY < board.length && curX >= 0 && curX < board[0].length;
 
+    const allowedRoutes = ([y, x]: Coordinate) =>
+      [BoardItem.FOOD, BoardItem.STREET].includes(board[y][x]);
+
     return directions
       .map(([y, x]) => <Coordinate>[y + curY, x + curX])
       .filter(validRoutes)
-      .filter(
-        ([y, x]) =>
-          board[y][x] === BoardItem.FOOD || board[y][x] === BoardItem.STREET
-      );
+      .filter(allowedRoutes);
   };
 
   const getPacmonInitialPosition = (): Coordinate | null => {
@@ -44,8 +44,7 @@ const pathfinding = (payload: Board) => {
     const path = [to];
 
     let from: Coordinate | null = to.from ?? null;
-
-    while (from !== null) {
+    while (from) {
       const temp = stack.find((s) => s.to.toString() === from?.toString());
       from = temp?.from ?? null;
 
