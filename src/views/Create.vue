@@ -90,7 +90,7 @@ const boxClickHandler = (coordinate: Coordinate) => {
 
 const startResolve = () => {
   // pathfinding(boardStore.board);
-  pathfinding([
+  const board = [
     [
       BoardItem.WALL,
       BoardItem.WALL,
@@ -100,19 +100,36 @@ const startResolve = () => {
     ],
     [
       BoardItem.WALL,
-      BoardItem.FOOD,
       BoardItem.PACMON,
+      BoardItem.STREET,
+      BoardItem.STREET,
+      BoardItem.WALL,
+    ],
+    [
+      BoardItem.WALL,
+      BoardItem.STREET,
+      BoardItem.WALL,
+      BoardItem.STREET,
+      BoardItem.WALL,
+    ],
+    [
+      BoardItem.WALL,
+      BoardItem.STREET,
+      BoardItem.WALL,
       BoardItem.FOOD,
       BoardItem.WALL,
     ],
     [
-      BoardItem.FOOD,
-      BoardItem.FOOD,
+      BoardItem.WALL,
+      BoardItem.WALL,
       BoardItem.WALL,
       BoardItem.WALL,
       BoardItem.WALL,
     ],
-  ]);
+  ];
+
+  console.log(board);
+  pathfinding(board);
 };
 </script>
 
