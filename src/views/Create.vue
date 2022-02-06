@@ -114,7 +114,7 @@ const startResolve = () => {
     ],
     [
       BoardItem.WALL,
-      BoardItem.STREET,
+      BoardItem.FOOD,
       BoardItem.WALL,
       BoardItem.FOOD,
       BoardItem.WALL,
