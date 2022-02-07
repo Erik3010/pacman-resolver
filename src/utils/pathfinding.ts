@@ -5,11 +5,13 @@ type Stack = {
   from: Coordinate;
   to: Coordinate;
 };
+type Path = {
+  id: String;
+  path: Coordinate[];
+};
 
 const pathfinding = (payload: Board) => {
   const board = JSON.parse(JSON.stringify(payload));
-
-  const paths = [];
 
   const possibleRoutes = ([curY, curX]: Coordinate) => {
     const directions: Coordinate[] = [
@@ -23,7 +25,9 @@ const pathfinding = (payload: Board) => {
       curY >= 0 && curY < board.length && curX >= 0 && curX < board[0].length;
 
     const allowedRoutes = ([y, x]: Coordinate) =>
-      [BoardItem.FOOD, BoardItem.STREET].includes(board[y][x]);
+      [BoardItem.FOOD, BoardItem.STREET, BoardItem.PACMON].includes(
+        board[y][x]
+      );
 
     return directions
       .map(([y, x]) => <Coordinate>[y + curY, x + curX])
@@ -66,7 +70,10 @@ const pathfinding = (payload: Board) => {
       visited.add(current.toString());
 
       const [y, x] = current;
-      if (board[y][x] === BoardItem.FOOD) return buildPath(stack, [y, x]);
+      const isSearched = paths.find((path) => path.id === current.toString());
+
+      if (board[y][x] === BoardItem.FOOD && !isSearched)
+        return buildPath(stack, [y, x]);
 
       for (const route of possibleRoutes(current)) {
         if (!visited.has(route.toString())) {
@@ -79,7 +86,20 @@ const pathfinding = (payload: Board) => {
     return null;
   };
 
-  console.log(traverse(getPacmonInitialPosition()!));
+  const paths: Path[] = [];
+
+  let lastPacmonPosition = getPacmonInitialPosition();
+  let path = traverse(lastPacmonPosition!);
+  while (path) {
+    lastPacmonPosition = path[path.length - 1];
+    paths.push({
+      id: lastPacmonPosition.toString(),
+      path,
+    });
+    path = traverse(lastPacmonPosition);
+  }
+
+  console.log(paths);
 };
 
 export default pathfinding;
