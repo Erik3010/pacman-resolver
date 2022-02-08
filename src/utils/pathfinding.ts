@@ -11,7 +11,7 @@ type Path = {
 };
 
 const pathfinding = (payload: Board) => {
-  const board = JSON.parse(JSON.stringify(payload));
+  const board: Board = JSON.parse(JSON.stringify(payload));
 
   const possibleRoutes = ([curY, curX]: Coordinate) => {
     const directions: Coordinate[] = [
@@ -21,8 +21,8 @@ const pathfinding = (payload: Board) => {
       [0, -1],
     ];
 
-    const validRoutes = () =>
-      curY >= 0 && curY < board.length && curX >= 0 && curX < board[0].length;
+    const validRoutes = ([y, x]: Coordinate) =>
+      y >= 0 && y < board.length && x >= 0 && x < board[0].length;
 
     const allowedRoutes = ([y, x]: Coordinate) =>
       [BoardItem.FOOD, BoardItem.STREET, BoardItem.PACMON].includes(
@@ -48,7 +48,7 @@ const pathfinding = (payload: Board) => {
   const buildPath = (stack: Stack[], to: Coordinate): Coordinate[] => {
     const path = [to];
 
-    let from: Coordinate | null = to ?? null;
+    let from: Coordinate | null = to;
     while (from) {
       const parent = stack.find((s) => s.to.toString() === from?.toString());
 
@@ -73,7 +73,7 @@ const pathfinding = (payload: Board) => {
       const isSearched = paths.find((path) => path.id === current.toString());
 
       if (board[y][x] === BoardItem.FOOD && !isSearched)
-        return buildPath(stack, [y, x]);
+        return buildPath(stack, current);
 
       for (const route of possibleRoutes(current)) {
         if (!visited.has(route.toString())) {
@@ -99,7 +99,7 @@ const pathfinding = (payload: Board) => {
     path = traverse(lastPacmonPosition);
   }
 
-  console.log(paths);
+  return paths;
 };
 
 export default pathfinding;
