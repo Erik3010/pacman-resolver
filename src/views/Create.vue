@@ -27,7 +27,7 @@
       </div>
     </main>
     <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
-      Start!
+      Resolve !
     </Button>
 
     <WheelMenu :visible="false" />
@@ -89,86 +89,8 @@ const boxClickHandler = (coordinate: Coordinate) => {
 };
 
 const startResolve = () => {
-  // pathfinding(boardStore.board);
-  // const board = [
-  //   [
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //   ],
-  //   [
-  //     BoardItem.WALL,
-  //     BoardItem.PACMON,
-  //     BoardItem.STREET,
-  //     BoardItem.STREET,
-  //     BoardItem.WALL,
-  //   ],
-  //   [
-  //     BoardItem.WALL,
-  //     BoardItem.STREET,
-  //     BoardItem.WALL,
-  //     BoardItem.STREET,
-  //     BoardItem.WALL,
-  //   ],
-  //   [
-  //     BoardItem.WALL,
-  //     BoardItem.FOOD,
-  //     BoardItem.WALL,
-  //     BoardItem.FOOD,
-  //     BoardItem.WALL,
-  //   ],
-  //   [
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //     BoardItem.WALL,
-  //   ],
-  // ];
-  const board = [
-    [
-      BoardItem.PACMON,
-      BoardItem.STREET,
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.WALL,
-    ],
-    [
-      BoardItem.WALL,
-      BoardItem.STREET,
-      BoardItem.STREET,
-      BoardItem.WALL,
-      BoardItem.WALL,
-    ],
-    [
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.STREET,
-      BoardItem.STREET,
-      BoardItem.WALL,
-    ],
-    [
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.STREET,
-      BoardItem.STREET,
-    ],
-    [
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.WALL,
-      BoardItem.FOOD,
-    ],
-  ];
-
-  console.log(pathfinding(board));
-  // console.log(board);
-  // pathfinding(boardStore.board);
-  // console.log(pathfinding(boardStore.board))
+  console.log(boardStore.board);
+  console.log(pathfinding(boardStore.board));
 };
 </script>
 

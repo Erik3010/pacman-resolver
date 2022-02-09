@@ -59,7 +59,10 @@ const pathfinding = (payload: Board) => {
     return path.reverse();
   };
 
-  const traverse = (initialPosition: Coordinate): Coordinate[] | null => {
+  const bfs = (
+    initialPosition: Coordinate,
+    paths: Path[]
+  ): Coordinate[] | null => {
     const stack: Stack[] = [];
     const visited = new Set();
 
@@ -86,20 +89,26 @@ const pathfinding = (payload: Board) => {
     return null;
   };
 
-  const paths: Path[] = [];
+  const traverse = () => {
+    const paths: Path[] = [];
 
-  let lastPacmonPosition = getPacmonInitialPosition();
-  let path = traverse(lastPacmonPosition!);
-  while (path) {
-    lastPacmonPosition = path[path.length - 1];
-    paths.push({
-      id: lastPacmonPosition.toString(),
-      path,
-    });
-    path = traverse(lastPacmonPosition);
-  }
+    let lastPacmonPosition = getPacmonInitialPosition();
+    if (!lastPacmonPosition) return [];
 
-  return paths;
+    let path = bfs(lastPacmonPosition!, paths);
+    while (path) {
+      lastPacmonPosition = path[path.length - 1];
+      paths.push({
+        id: lastPacmonPosition.toString(),
+        path,
+      });
+      path = bfs(lastPacmonPosition, paths);
+    }
+
+    return paths;
+  };
+
+  return traverse();
 };
 
 export default pathfinding;
