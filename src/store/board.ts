@@ -13,6 +13,11 @@ export interface Coordinate {
   y: number;
 }
 
+export interface BoardStep {
+  id: String;
+  count: number;
+}
+
 export type Board = Array<Array<BoardItem>>;
 
 export const useBoard = defineStore("board", {
@@ -21,6 +26,7 @@ export const useBoard = defineStore("board", {
     col: 5,
     board: <Board>[],
     selectedCoorindate: <Coordinate[]>[],
+    boardStepCount: <BoardStep[]>[],
   }),
   actions: {
     generateBoard() {
@@ -80,6 +86,14 @@ export const useBoard = defineStore("board", {
     },
     clearSelectedCoordinate() {
       this.selectedCoorindate = [];
+    },
+    generateBoardStepCount() {
+      this.boardStepCount = this.board.reduce((total, current, i) => {
+        return [
+          ...total,
+          ...current.map((_, j) => ({ id: `${i},${j}`, count: 0 })),
+        ];
+      }, <BoardStep[]>[]);
     },
   },
 });

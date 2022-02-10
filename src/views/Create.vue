@@ -7,22 +7,11 @@
     <main class="flex flex-col items-center" ref="main">
       <div class="space-y-3">
         <div class="flex space-x-3" v-for="(row, y) in boardStore.board">
-          <div
+          <Box
             v-for="(column, x) in row"
-            :class="[
-              'box',
-              'select-none',
-              { 'box--active': boardStore.isInSelectedCoordinate({ y, x }) },
-            ]"
-            @click="boxClickHandler({ y, x })"
-          >
-            <img
-              v-if="!!column"
-              class="w-8 h-8"
-              :src="boardItemImage[column]"
-              :alt="column"
-            />
-          </div>
+            :coordinate="{ y, x }"
+            :item="column"
+          />
         </div>
       </div>
     </main>
@@ -37,24 +26,20 @@
 <script setup lang="ts">
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
+import Box from "@/components/organisms/Box.vue";
 
 import { useRouter } from "vue-router";
 
-import useShiftKey from "@/hooks/useShiftKey";
-import { useBoard, BoardItem, Coordinate } from "@/store/board";
+import { useBoard, BoardItem } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
-import Street from "@/assets/street.png";
-import Food from "@/assets/food.png";
-import Pacmon from "@/assets/pacmon.png";
-import Wall from "@/assets/wall.png";
-
 import pathfinding from "@/utils/pathfinding";
+
+import { onMounted, nextTick } from "vue";
 
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
-const { isShiftKeyPressed } = useShiftKey();
 
 if (!boardStore.row || !boardStore.col) {
   notificationStore.show({
@@ -66,39 +51,63 @@ if (!boardStore.row || !boardStore.col) {
   router.push({ name: "Setup" });
 }
 
-boardStore.generateBoard();
+const board = [
+  [
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+  ],
+  [
+    BoardItem.WALL,
+    BoardItem.PACMON,
+    BoardItem.STREET,
+    BoardItem.STREET,
+    BoardItem.WALL,
+  ],
+  [
+    BoardItem.WALL,
+    BoardItem.STREET,
+    BoardItem.WALL,
+    BoardItem.STREET,
+    BoardItem.WALL,
+  ],
+  [
+    BoardItem.WALL,
+    BoardItem.FOOD,
+    BoardItem.WALL,
+    BoardItem.FOOD,
+    BoardItem.WALL,
+  ],
+  [
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+    BoardItem.WALL,
+  ],
+];
+onMounted(async () => {
+  boardStore.generateBoard();
+  await nextTick();
 
-const boardItemImage = {
-  [BoardItem.STREET]: Street,
-  [BoardItem.FOOD]: Food,
-  [BoardItem.PACMON]: Pacmon,
-  [BoardItem.WALL]: Wall,
-};
-
-const boxClickHandler = (coordinate: Coordinate) => {
-  if (boardStore.isInSelectedCoordinate(coordinate)) {
-    boardStore.removeSelectedCoordinate(coordinate);
-    return;
-  }
-
-  if (isShiftKeyPressed.value) {
-    boardStore.setBulkSelectedCoordinate(coordinate);
-  } else {
-    boardStore.setSelectedCoordinate(coordinate);
-  }
-};
+  boardStore.board = board;
+});
 
 const startResolve = () => {
-  console.log(boardStore.board);
-  console.log(pathfinding(boardStore.board));
+  // TODO: Swap animation
+  // TODO: Add class to translate
+  // TODO: Swap item at the board
+  // TODO: Remove the class that used to translate
+  boardStore.board[1][1] = BoardItem.STREET;
+  boardStore.board[2][1] = BoardItem.PACMON;
+  return;
+
+  const paths = pathfinding(boardStore.board);
+
+  boardStore.generateBoardStepCount();
+
+  console.log(paths);
 };
 </script>
-
-<style scoped>
-.box {
-  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-center;
-}
-.box--active {
-  @apply border-2 border-blue-600 scale-110 bg-main;
-}
-</style>
