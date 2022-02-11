@@ -8,6 +8,13 @@ export enum BoardItem {
   EMPTY = "",
 }
 
+export enum Direction {
+  UP = "up",
+  DOWN = "down",
+  LEFT = "left",
+  RIGHT = "right",
+}
+
 export interface Coordinate {
   x: number;
   y: number;
@@ -16,6 +23,7 @@ export interface Coordinate {
 export interface BoardStep {
   id: String;
   count: number;
+  swapDirection: Direction | null;
 }
 
 export type Board = Array<Array<BoardItem>>;
@@ -27,6 +35,7 @@ export const useBoard = defineStore("board", {
     board: <Board>[],
     selectedCoorindate: <Coordinate[]>[],
     boardStepCount: <BoardStep[]>[],
+    isPathRunning: false,
   }),
   actions: {
     generateBoard() {
@@ -91,7 +100,11 @@ export const useBoard = defineStore("board", {
       this.boardStepCount = this.board.reduce((total, current, i) => {
         return [
           ...total,
-          ...current.map((_, j) => ({ id: `${i},${j}`, count: 0 })),
+          ...current.map((_, j) => ({
+            id: `${i},${j}`,
+            count: 0,
+            swapDirection: null,
+          })),
         ];
       }, <BoardStep[]>[]);
     },

@@ -18,6 +18,7 @@
     <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
       Resolve !
     </Button>
+    <Button :classNames="['mx-auto', 'mt-12']" @click="getPath"> Get ! </Button>
 
     <WheelMenu :visible="false" />
   </section>
@@ -33,7 +34,7 @@ import { useRouter } from "vue-router";
 import { useBoard, BoardItem } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
-import pathfinding from "@/utils/pathfinding";
+import pathfinding, { Path } from "@/utils/pathfinding";
 
 import { onMounted, nextTick } from "vue";
 
@@ -95,19 +96,49 @@ onMounted(async () => {
   boardStore.board = board;
 });
 
+function* pathGenerator(paths: Path[]) {
+  const temp = [...paths];
+
+  while (temp.length) {
+    const current = temp.shift();
+    yield current;
+  }
+}
+let generator: Generator<Path | undefined, void, unknown> | null = null;
+
 const startResolve = () => {
   // TODO: Swap animation
   // TODO: Add class to translate
   // TODO: Swap item at the board
   // TODO: Remove the class that used to translate
-  boardStore.board[1][1] = BoardItem.STREET;
-  boardStore.board[2][1] = BoardItem.PACMON;
-  return;
+  // boardStore.board[1][1] = BoardItem.STREET;
+  // boardStore.board[2][1] = BoardItem.PACMON;
+  // return;
 
   const paths = pathfinding(boardStore.board);
 
   boardStore.generateBoardStepCount();
-
   console.log(paths);
+
+  generator = pathGenerator(paths);
+};
+
+const sleep = (time = 500) =>
+  new Promise((resolve) => setTimeout(resolve, time));
+
+const getPath = async () => {
+  let path = generator!.next().value;
+  while (!!path) {
+    for (let i = 0; i < path.path.length; i++) {
+      const p = path.path[i];
+      const nextP = path.path[i + 1];
+
+      await sleep(500);
+
+      console.log(p);
+    }
+
+    path = generator!.next().value;
+  }
 };
 </script>

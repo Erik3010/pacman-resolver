@@ -5,7 +5,7 @@ type Stack = {
   from: Coordinate;
   to: Coordinate;
 };
-type Path = {
+export type Path = {
   id: String;
   path: Coordinate[];
 };
