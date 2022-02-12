@@ -24,6 +24,7 @@ export interface BoardStep {
   id: String;
   count: number;
   swapDirection: Direction | null;
+  callback: (() => void) | null;
 }
 
 export type Board = Array<Array<BoardItem>>;
@@ -104,6 +105,7 @@ export const useBoard = defineStore("board", {
             id: `${i},${j}`,
             count: 0,
             swapDirection: null,
+            callback: null,
           })),
         ];
       }, <BoardStep[]>[]);

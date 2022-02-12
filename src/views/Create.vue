@@ -127,15 +127,46 @@ const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
 const getPath = async () => {
+  // const promise = new Promise((resolve) => {
+  //   boardStore.boardStepCount.find(
+  //     (item) => item.id === `${1},${1}`
+  //   )!.callback = resolve as () => void;
+  // });
+
+  // await promise;
+  // console.log("asdasd");
+
   let path = generator!.next().value;
   while (!!path) {
     for (let i = 0; i < path.path.length; i++) {
+      if (i === path.path.length - 1) continue;
+
       const p = path.path[i];
       const nextP = path.path[i + 1];
 
-      await sleep(500);
+      const [y, x] = p;
 
-      console.log(p);
+      const [curY, curX] = p;
+      const current = boardStore.board[curY][curX];
+
+      const [nextY, nextX] = nextP;
+      const next = boardStore.board[nextY][nextX];
+
+      // console.log(p);
+
+      const promise = await new Promise((resolve) => {
+        boardStore.boardStepCount.find(
+          (item) => item.id === `${y},${x}`
+        )!.callback = resolve as () => void;
+      });
+
+      // SWAP
+      boardStore.board[curY][curX] = next;
+      boardStore.board[nextY][nextX] = current;
+
+      // await sleep(500);
+
+      // console.log(new Date());
     }
 
     path = generator!.next().value;

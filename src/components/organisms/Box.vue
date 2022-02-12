@@ -10,15 +10,24 @@
     <ZoomTransition :duration="300">
       <img
         v-if="!!props.item"
-        class="w-8 h-8 transition-all duration-300"
+        :class="[
+          'w-8',
+          'h-8',
+          'transition-all',
+          'duration-1000',
+          { down: isAnimating },
+        ]"
         :src="boardItemImage[props.item]"
         :alt="props.item"
+        ref="box"
       />
     </ZoomTransition>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onMounted, nextTick } from "vue";
+
 import { useBoard, Coordinate, BoardItem } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
 import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
@@ -55,6 +64,49 @@ const clickHandler = (coordinate: Coordinate) => {
     boardStore.setSelectedCoordinate(coordinate);
   }
 };
+
+const boardStep = boardStore.boardStepCount.find(
+  (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
+);
+
+// watch(
+//   () => boardStep?.callback,
+//   (val) => {
+//     console.log(val);
+//   },
+//   { deep: true }
+// );
+
+const box = ref<HTMLDivElement | null>(null);
+const isAnimating = ref(false);
+watch(
+  () =>
+    boardStore.boardStepCount.find(
+      (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
+    ),
+  (val) => {
+    if (!val?.callback || !box.value) return;
+
+    isAnimating.value = true;
+
+    const cb = () => {
+      box.value!.removeEventListener("transitionend", cb);
+      val?.callback && val?.callback();
+      isAnimating.value = false;
+
+      boardStore.boardStepCount.find(
+        (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
+      )!.callback = null;
+    };
+
+    box.value!.addEventListener("transitionend", cb);
+
+    // setTimeout(() => {
+    //   val?.callback && val?.callback();
+    // }, 3000);
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
@@ -63,5 +115,17 @@ const clickHandler = (coordinate: Coordinate) => {
 }
 .box--active {
   @apply border-2 border-blue-600 scale-110 bg-main;
+}
+.up {
+  @apply transform -translate-y-14;
+}
+.down {
+  @apply transform translate-y-14;
+}
+.left {
+  @apply transform -translate-x-14;
+}
+.right {
+  @apply transform translate-x-14;
 }
 </style>
