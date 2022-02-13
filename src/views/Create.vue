@@ -134,7 +134,6 @@ const getPath = async () => {
   // });
 
   // await promise;
-  // console.log("asdasd");
 
   let path = generator!.next().value;
   while (!!path) {
