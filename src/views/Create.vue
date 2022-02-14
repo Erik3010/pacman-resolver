@@ -155,7 +155,7 @@ const getPath = async () => {
 
       const promise = await new Promise((resolve) => {
         boardStore.boardStepCount.find(
-          (item) => item.id === `${y},${x}`
+          (item) => item.id === `${y},${x}` 
         )!.callback = resolve as () => void;
       });
 
@@ -165,7 +165,6 @@ const getPath = async () => {
 
       // await sleep(500);
 
-      // console.log(new Date());
     }
 
     path = generator!.next().value;
