@@ -18,7 +18,8 @@
     <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
       Resolve !
     </Button>
-    <Button :classNames="['mx-auto', 'mt-12']" @click="getPath"> Get ! </Button>
+    <Button :classNames="['mx-auto', 'mt-5']" @click="getPath"> Get ! </Button>
+    <Button :classNames="['mx-auto', 'mt-5']" @click="test()"> Test ! </Button>
 
     <WheelMenu :visible="false" />
   </section>
@@ -31,12 +32,12 @@ import Box from "@/components/organisms/Box.vue";
 
 import { useRouter } from "vue-router";
 
-import { useBoard, BoardItem } from "@/store/board";
+import { useBoard, BoardItem, Direction } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
 
-import { onMounted, nextTick } from "vue";
+import { onMounted, nextTick, ref } from "vue";
 
 const router = useRouter();
 const boardStore = useBoard();
@@ -89,6 +90,43 @@ const board = [
     BoardItem.WALL,
   ],
 ];
+// const board = [
+//   [
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//   ],
+//   [
+//     BoardItem.WALL,
+//     BoardItem.PACMON,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//   ],
+//   [
+//     BoardItem.WALL,
+//     BoardItem.STREET,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//   ],
+//   [
+//     BoardItem.WALL,
+//     BoardItem.FOOD,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//   ],
+//   [
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//     BoardItem.WALL,
+//   ],
+// ];
 onMounted(async () => {
   boardStore.generateBoard();
   await nextTick();
@@ -126,6 +164,16 @@ const startResolve = () => {
 const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
+const getBoardId = (y: number, x: number) => `${y},${x}`;
+
+const temp = ref(true);
+const test = () => {
+  boardStore.boardStepCount.find(
+    (item) => item.id === getBoardId(1, 1)
+  )!.swapDirection = temp.value ? Direction.DOWN : null;
+  temp.value = !temp.value;
+};
+
 const getPath = async () => {
   // const promise = new Promise((resolve) => {
   //   boardStore.boardStepCount.find(
@@ -151,20 +199,55 @@ const getPath = async () => {
       const [nextY, nextX] = nextP;
       const next = boardStore.board[nextY][nextX];
 
+      if (curX !== nextX) {
+        if (curX > nextX) {
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${curY},${curX}`
+          )!.swapDirection = Direction.LEFT;
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${nextY},${nextX}`
+          )!.swapDirection = Direction.RIGHT;
+        } else {
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${curY},${curX}`
+          )!.swapDirection = Direction.RIGHT;
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${nextY},${nextX}`
+          )!.swapDirection = Direction.LEFT;
+        }
+      }
+      if (curY !== nextY) {
+        if (curY > nextY) {
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${curY},${curX}`
+          )!.swapDirection = Direction.UP;
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${nextY},${nextX}`
+          )!.swapDirection = Direction.DOWN;
+        } else {
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${curY},${curX}`
+          )!.swapDirection = Direction.DOWN;
+          boardStore.boardStepCount.find(
+            (item) => item.id === `${nextY},${nextX}`
+          )!.swapDirection = Direction.UP;
+        }
+      }
+
       // console.log(p);
 
-      const promise = await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         boardStore.boardStepCount.find(
-          (item) => item.id === `${y},${x}` 
-        )!.callback = resolve as () => void;
+          (item) => item.id === `${y},${x}`
+        )!.callback = async () => {
+          boardStore.board[curY][curX] = next;
+          boardStore.board[nextY][nextX] = current;
+
+          resolve();
+        };
       });
 
       // SWAP
-      boardStore.board[curY][curX] = next;
-      boardStore.board[nextY][nextX] = current;
-
-      // await sleep(500);
-
     }
 
     path = generator!.next().value;

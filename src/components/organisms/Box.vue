@@ -13,9 +13,14 @@
         :class="[
           'w-8',
           'h-8',
-          'transition-all',
+          'transition-transform',
           'duration-1000',
-          { down: isAnimating },
+          {
+            [boardStore.boardStepCount.find(
+              (item) =>
+                item.id === `${props.coordinate.y},${props.coordinate.x}`
+            )?.swapDirection ?? '']: isAnimating,
+          },
         ]"
         :src="boardItemImage[props.item]"
         :alt="props.item"
@@ -36,6 +41,7 @@ import Street from "@/assets/street.png";
 import Food from "@/assets/food.png";
 import Pacmon from "@/assets/pacmon.png";
 import Wall from "@/assets/wall.png";
+import ItemVue from "./WheelMenu/Item.vue";
 
 const props = defineProps<{
   coordinate: Coordinate;
@@ -65,34 +71,35 @@ const clickHandler = (coordinate: Coordinate) => {
   }
 };
 
-const boardStep = boardStore.boardStepCount.find(
+const box = ref<HTMLDivElement | null>(null);
+const isAnimating = ref(false);
+const direction = boardStore.boardStepCount.find(
   (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
 );
 
-// watch(
-//   () => boardStep?.callback,
-//   (val) => {
-//     console.log(val);
-//   },
-//   { deep: true }
-// );
+const sleep = (time = 500) =>
+  new Promise((resolve) => setTimeout(resolve, time));
 
-const box = ref<HTMLDivElement | null>(null);
-const isAnimating = ref(false);
 watch(
   () =>
     boardStore.boardStepCount.find(
       (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
     ),
-  (val) => {
-    if (!val?.callback || !box.value) return;
+  (val, oldVal) => {
+    // if (!val?.swapDirection || !box.value) return;
+    if (!box.value) return;
 
     isAnimating.value = true;
 
-    const cb = () => {
+    const cb = async () => {
       box.value!.removeEventListener("transitionend", cb);
+
       val?.callback && val?.callback();
       isAnimating.value = false;
+
+      boardStore.boardStepCount.find(
+        (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
+      )!.swapDirection = null;
 
       boardStore.boardStepCount.find(
         (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
