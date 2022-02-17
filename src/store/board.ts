@@ -38,6 +38,11 @@ export const useBoard = defineStore("board", {
     boardStepCount: <BoardStep[]>[],
     isPathRunning: false,
   }),
+  getters: {
+    getBoardStepCountId() {
+      return ({ y, x }: Coordinate) => `${y},${x}`;
+    },
+  },
   actions: {
     generateBoard() {
       this.board = Array(this.row)
@@ -102,13 +107,27 @@ export const useBoard = defineStore("board", {
         return [
           ...total,
           ...current.map((_, j) => ({
-            id: `${i},${j}`,
+            id: this.getBoardStepCountId({ y: i, x: j }),
             count: 0,
             swapDirection: null,
             callback: null,
           })),
         ];
       }, <BoardStep[]>[]);
+    },
+    setBoardStepCount<K extends keyof BoardStep>(
+      id: Coordinate,
+      key: K,
+      value: BoardStep[K]
+    ) {
+      const index = this.boardStepCount.findIndex(
+        (board) => board.id === this.getBoardStepCountId(id)
+      );
+
+      this.boardStepCount[index][key] = value;
+    },
+    changeBoardStepDirection(id: Coordinate, direction: Direction) {
+      this.setBoardStepCount(id, "swapDirection", direction);
     },
   },
 });

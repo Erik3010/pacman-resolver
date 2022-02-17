@@ -168,21 +168,14 @@ const getBoardId = (y: number, x: number) => `${y},${x}`;
 
 const temp = ref(true);
 const test = () => {
-  boardStore.boardStepCount.find(
-    (item) => item.id === getBoardId(1, 1)
-  )!.swapDirection = temp.value ? Direction.DOWN : null;
-  temp.value = !temp.value;
+  // boardStore.boardStepCount.find(
+  //   (item) => item.id === getBoardId(1, 1)
+  // )!.swapDirection = temp.value ? Direction.DOWN : null;
+  // temp.value = !temp.value;
+  boardStore.setBoardStepCount({ y: 1, x: 1 }, "swapDirection", Direction.UP);
 };
 
 const getPath = async () => {
-  // const promise = new Promise((resolve) => {
-  //   boardStore.boardStepCount.find(
-  //     (item) => item.id === `${1},${1}`
-  //   )!.callback = resolve as () => void;
-  // });
-
-  // await promise;
-
   let path = generator!.next().value;
   while (!!path) {
     for (let i = 0; i < path.path.length; i++) {
@@ -199,38 +192,51 @@ const getPath = async () => {
       const [nextY, nextX] = nextP;
       const next = boardStore.board[nextY][nextX];
 
+      const pairDirection = [
+        { x: [Direction.LEFT, Direction.RIGHT] },
+        { y: [Direction.UP, Direction.DOWN] },
+      ];
+
       if (curX !== nextX) {
         if (curX > nextX) {
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${curY},${curX}`
-          )!.swapDirection = Direction.LEFT;
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${nextY},${nextX}`
-          )!.swapDirection = Direction.RIGHT;
+          boardStore.changeBoardStepDirection(
+            { y: curY, x: curX },
+            Direction.LEFT
+          );
+          boardStore.changeBoardStepDirection(
+            { y: nextY, x: nextX },
+            Direction.RIGHT
+          );
         } else {
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${curY},${curX}`
-          )!.swapDirection = Direction.RIGHT;
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${nextY},${nextX}`
-          )!.swapDirection = Direction.LEFT;
+          boardStore.changeBoardStepDirection(
+            { y: curY, x: curX },
+            Direction.RIGHT
+          );
+          boardStore.changeBoardStepDirection(
+            { y: nextY, x: nextX },
+            Direction.LEFT
+          );
         }
       }
       if (curY !== nextY) {
         if (curY > nextY) {
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${curY},${curX}`
-          )!.swapDirection = Direction.UP;
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${nextY},${nextX}`
-          )!.swapDirection = Direction.DOWN;
+          boardStore.changeBoardStepDirection(
+            { y: curY, x: curX },
+            Direction.UP
+          );
+          boardStore.changeBoardStepDirection(
+            { y: nextY, x: nextX },
+            Direction.DOWN
+          );
         } else {
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${curY},${curX}`
-          )!.swapDirection = Direction.DOWN;
-          boardStore.boardStepCount.find(
-            (item) => item.id === `${nextY},${nextX}`
-          )!.swapDirection = Direction.UP;
+          boardStore.changeBoardStepDirection(
+            { y: curY, x: curX },
+            Direction.DOWN
+          );
+          boardStore.changeBoardStepDirection(
+            { y: nextY, x: nextX },
+            Direction.UP
+          );
         }
       }
 
@@ -240,8 +246,10 @@ const getPath = async () => {
         boardStore.boardStepCount.find(
           (item) => item.id === `${y},${x}`
         )!.callback = async () => {
-          boardStore.board[curY][curX] = next;
-          boardStore.board[nextY][nextX] = current;
+          boardStore.setBoardItem({ y: curY, x: curX }, next);
+          boardStore.setBoardItem({ y: nextY, x: nextX }, current);
+
+          await sleep(1100);
 
           resolve();
         };

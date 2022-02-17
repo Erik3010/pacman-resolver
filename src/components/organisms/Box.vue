@@ -85,7 +85,7 @@ watch(
     boardStore.boardStepCount.find(
       (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
     ),
-  (val, oldVal) => {
+  (val) => {
     // if (!val?.swapDirection || !box.value) return;
     if (!box.value) return;
 
@@ -95,6 +95,7 @@ watch(
       box.value!.removeEventListener("transitionend", cb);
 
       val?.callback && val?.callback();
+
       isAnimating.value = false;
 
       boardStore.boardStepCount.find(
@@ -107,10 +108,6 @@ watch(
     };
 
     box.value!.addEventListener("transitionend", cb);
-
-    // setTimeout(() => {
-    //   val?.callback && val?.callback();
-    // }, 3000);
   },
   { deep: true }
 );
