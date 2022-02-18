@@ -32,7 +32,7 @@ import Box from "@/components/organisms/Box.vue";
 
 import { useRouter } from "vue-router";
 
-import { useBoard, BoardItem, Direction } from "@/store/board";
+import { useBoard, BoardItem, Direction, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
@@ -192,55 +192,37 @@ const getPath = async () => {
       const [nextY, nextX] = nextP;
       const next = boardStore.board[nextY][nextX];
 
-      const pairDirection = [
-        { x: [Direction.LEFT, Direction.RIGHT] },
-        { y: [Direction.UP, Direction.DOWN] },
+      const currentEntity: Coordinate = { y: curY, x: curX };
+      const nextEntity: Coordinate = { y: nextY, x: nextX };
+      const items = [
+        {
+          axis: "x",
+          direction: [Direction.LEFT, Direction.RIGHT],
+        },
+        {
+          axis: "y",
+          direction: [Direction.UP, Direction.DOWN],
+        },
       ];
 
-      if (curX !== nextX) {
-        if (curX > nextX) {
-          boardStore.changeBoardStepDirection(
-            { y: curY, x: curX },
-            Direction.LEFT
-          );
-          boardStore.changeBoardStepDirection(
-            { y: nextY, x: nextX },
-            Direction.RIGHT
-          );
-        } else {
-          boardStore.changeBoardStepDirection(
-            { y: curY, x: curX },
-            Direction.RIGHT
-          );
-          boardStore.changeBoardStepDirection(
-            { y: nextY, x: nextX },
-            Direction.LEFT
-          );
-        }
-      }
-      if (curY !== nextY) {
-        if (curY > nextY) {
-          boardStore.changeBoardStepDirection(
-            { y: curY, x: curX },
-            Direction.UP
-          );
-          boardStore.changeBoardStepDirection(
-            { y: nextY, x: nextX },
-            Direction.DOWN
-          );
-        } else {
-          boardStore.changeBoardStepDirection(
-            { y: curY, x: curX },
-            Direction.DOWN
-          );
-          boardStore.changeBoardStepDirection(
-            { y: nextY, x: nextX },
-            Direction.UP
-          );
-        }
-      }
+      items.forEach(({ axis, direction }) => {
+        const { current, next } = {
+          current: currentEntity[axis as keyof Coordinate],
+          next: nextEntity[axis as keyof Coordinate],
+        };
 
-      // console.log(p);
+        if (current === next) return;
+        const index = current > next ? 0 : 1;
+
+        boardStore.changeBoardStepDirection(
+          currentEntity,
+          direction[index % 2]
+        );
+        boardStore.changeBoardStepDirection(
+          nextEntity,
+          direction[(index + 1) % 2]
+        );
+      });
 
       await new Promise<void>((resolve) => {
         boardStore.boardStepCount.find(
@@ -254,8 +236,6 @@ const getPath = async () => {
           resolve();
         };
       });
-
-      // SWAP
     }
 
     path = generator!.next().value;
