@@ -194,7 +194,7 @@ const getPath = async () => {
 
       const currentEntity: Coordinate = { y: curY, x: curX };
       const nextEntity: Coordinate = { y: nextY, x: nextX };
-      const items = [
+      const axis = [
         {
           axis: "x",
           direction: [Direction.LEFT, Direction.RIGHT],
@@ -205,7 +205,7 @@ const getPath = async () => {
         },
       ];
 
-      items.forEach(({ axis, direction }) => {
+      axis.forEach(({ axis, direction }) => {
         const { current, next } = {
           current: currentEntity[axis as keyof Coordinate],
           next: nextEntity[axis as keyof Coordinate],
