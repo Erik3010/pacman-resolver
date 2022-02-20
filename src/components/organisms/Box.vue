@@ -41,7 +41,6 @@ import Street from "@/assets/street.png";
 import Food from "@/assets/food.png";
 import Pacmon from "@/assets/pacmon.png";
 import Wall from "@/assets/wall.png";
-import ItemVue from "./WheelMenu/Item.vue";
 
 const props = defineProps<{
   coordinate: Coordinate;
