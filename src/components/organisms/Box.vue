@@ -15,12 +15,7 @@
           'h-8',
           'transition-transform',
           'duration-1000',
-          {
-            [boardStore.boardStepCount.find(
-              (item) =>
-                item.id === `${props.coordinate.y},${props.coordinate.x}`
-            )?.swapDirection ?? '']: isAnimating,
-          },
+          animationClass,
         ]"
         :src="boardItemImage[props.item]"
         :alt="props.item"
@@ -31,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from "vue";
+import { ref, watch, onMounted, nextTick, computed } from "vue";
 
 import { useBoard, Coordinate, BoardItem } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
@@ -46,6 +41,15 @@ const props = defineProps<{
   coordinate: Coordinate;
   item: BoardItem;
 }>();
+
+const animationClass = computed(() => {
+  const direction =
+    boardStore.boardStepCount.find(
+      (item) => item.id === boardStore.getBoardStepCountId(props.coordinate)
+    )?.swapDirection ?? "";
+
+  return { [direction]: isAnimating.value };
+});
 
 const boardStore = useBoard();
 const { isShiftKeyPressed } = useShiftKey();
@@ -72,9 +76,6 @@ const clickHandler = (coordinate: Coordinate) => {
 
 const box = ref<HTMLDivElement | null>(null);
 const isAnimating = ref(false);
-const direction = boardStore.boardStepCount.find(
-  (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
-);
 
 const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
