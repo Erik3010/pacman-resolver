@@ -145,14 +145,6 @@ function* pathGenerator(paths: Path[]) {
 let generator: Generator<Path | undefined, void, unknown> | null = null;
 
 const startResolve = () => {
-  // TODO: Swap animation
-  // TODO: Add class to translate
-  // TODO: Swap item at the board
-  // TODO: Remove the class that used to translate
-  // boardStore.board[1][1] = BoardItem.STREET;
-  // boardStore.board[2][1] = BoardItem.PACMON;
-  // return;
-
   const paths = pathfinding(boardStore.board);
 
   boardStore.generateBoardStepCount();
