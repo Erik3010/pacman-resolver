@@ -160,10 +160,6 @@ const getBoardId = (y: number, x: number) => `${y},${x}`;
 
 const temp = ref(true);
 const test = () => {
-  // boardStore.boardStepCount.find(
-  //   (item) => item.id === getBoardId(1, 1)
-  // )!.swapDirection = temp.value ? Direction.DOWN : null;
-  // temp.value = !temp.value;
   boardStore.setBoardStepCount({ y: 1, x: 1 }, "swapDirection", Direction.UP);
 };
 
