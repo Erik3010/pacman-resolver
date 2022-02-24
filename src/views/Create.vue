@@ -156,8 +156,6 @@ const startResolve = () => {
 const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
-const getBoardId = (y: number, x: number) => `${y},${x}`;
-
 const temp = ref(true);
 const test = () => {
   boardStore.setBoardStepCount({ y: 1, x: 1 }, "swapDirection", Direction.UP);
