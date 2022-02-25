@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick, computed } from "vue";
+import { ref, watch, computed } from "vue";
 
 import { useBoard, Coordinate, BoardItem } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
