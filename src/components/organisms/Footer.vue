@@ -7,8 +7,9 @@
       target="_blank"
       class="hover:underline hover:underline-offset-2 hover:text-gray-300"
       href="https://github.com/Erik3010"
-      >Erik3010</a
     >
+      Erik3010
+    </a>
     ✌
   </footer>
 </template>
