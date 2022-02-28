@@ -41,8 +41,8 @@
           {{ notificationStore.title }}
         </h4>
         <p
-          class="text-gray-400 text-sm mt-0.5"
           v-if="notificationStore.subtitle"
+          class="text-gray-400 text-sm mt-0.5"
         >
           {{ notificationStore.subtitle }}
         </p>
