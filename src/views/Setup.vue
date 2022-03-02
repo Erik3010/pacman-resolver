@@ -78,7 +78,7 @@ const redirectToCreatePage = () => {
     notificationStore.show({
       status: NotificationStatus.ERROR,
       title: "Invalid Row and Column",
-      subtitle: "Please input valid number in Row and Column field!",
+      subtitle: "Please input a valid number in Row and Column field!",
       duration: 4500,
     });
     return;
