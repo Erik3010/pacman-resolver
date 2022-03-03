@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative min-h-screen w-full flex flex-col justify-center items-center text-white bg-main content"
+    class="content relative min-h-screen w-full flex flex-col justify-center items-center text-white bg-main"
   >
     <main class="w-full z-10 py-20">
       <slot />
