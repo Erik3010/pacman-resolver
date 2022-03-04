@@ -1,10 +1,10 @@
 <template>
   <ZoomTransition :duration="250">
     <div
+      v-show="isVisible"
       ref="wheelMenu"
       class="absolute"
       :style="positionStyle"
-      v-show="isVisible"
     >
       <div class="relative select-none">
         <div
