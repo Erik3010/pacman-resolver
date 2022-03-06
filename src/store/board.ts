@@ -21,7 +21,7 @@ export interface Coordinate {
 }
 
 export interface BoardStep {
-  id: String;
+  id: string;
   count: number;
   swapDirection: Direction | null;
   callback: (() => void) | null;
