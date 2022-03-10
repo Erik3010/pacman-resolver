@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative cursor-pointer hover:bg-gray-800 transition"
+    class="relative cursor-pointer transition hover:bg-gray-800"
     @click="emit('click')"
   >
     <div
