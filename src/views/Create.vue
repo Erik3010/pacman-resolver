@@ -37,7 +37,7 @@ import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
 
-import { onMounted, nextTick, ref } from "vue";
+import { onMounted, nextTick } from "vue";
 
 const router = useRouter();
 const boardStore = useBoard();
