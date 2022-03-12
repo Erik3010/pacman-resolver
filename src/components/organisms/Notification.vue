@@ -48,7 +48,7 @@
         </p>
       </div>
       <button
-        class="group ml-8 cursor-pointer p-0.5 hover:bg-gray-700 rounded-md transition duration-150 focus:outline-none"
+        class="group ml-8 cursor-pointer p-0.5 rounded-md transition duration-150 focus:outline-none hover:bg-gray-700"
         @click="notificationStore.hide"
       >
         <svg
