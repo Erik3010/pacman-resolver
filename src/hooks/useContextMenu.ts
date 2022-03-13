@@ -10,10 +10,15 @@ interface ContextMenuPositionStyle {
   left: string;
 }
 
-const useContextMenu = (
-  wheelElement: Ref<HTMLDivElement | null>,
-  initialVisible: Boolean
-) => {
+const useContextMenu = ({
+  element,
+  initialVisible,
+  canOpenContextMenu,
+}: {
+  element: Ref<HTMLDivElement | null>;
+  initialVisible: Boolean;
+  canOpenContextMenu: () => boolean;
+}) => {
   const isVisible = ref(initialVisible || false);
   const position = ref<ContextMenuPosition>({ top: 0, left: 0 });
 
@@ -28,7 +33,7 @@ const useContextMenu = (
   const calculateContextMenuPosition = (
     contextMenuPosition: ContextMenuPosition
   ) => {
-    const el = <HTMLInputElement>wheelElement.value;
+    const el = <HTMLInputElement>element.value;
     const height = el.clientHeight;
     const width = el.clientWidth;
 
@@ -51,13 +56,15 @@ const useContextMenu = (
     if (!isVisible.value) return;
 
     const target = <HTMLInputElement>event.target;
-    const el = <HTMLInputElement>wheelElement.value;
+    const el = <HTMLInputElement>element.value;
 
     !el.contains(target) && closeContextMenu();
   };
 
   const contextMenuHandler = async (event: MouseEvent) => {
     event.preventDefault();
+
+    if (canOpenContextMenu()) return;
 
     const targetPosition = {
       top: event.pageY,

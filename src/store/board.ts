@@ -20,11 +20,12 @@ export interface Coordinate {
   y: number;
 }
 
-export interface BoardStep {
+export interface Cell {
   id: string;
   count: number;
   swapDirection: Direction | null;
   callback: (() => void) | null;
+  resolve: (() => Promise<void>) | null;
 }
 
 export type Board = Array<Array<BoardItem>>;
@@ -34,13 +35,29 @@ export const useBoard = defineStore("board", {
     row: 5,
     col: 5,
     board: <Board>[],
-    selectedCoorindate: <Coordinate[]>[],
-    boardStepCount: <BoardStep[]>[],
-    isPathRunning: false,
+    selectedCoordinate: <Coordinate[]>[],
+    cells: <Cell[]>[],
+    isAnimating: false,
   }),
   getters: {
-    getBoardStepCountId() {
+    getCellId() {
       return ({ y, x }: Coordinate) => `${y},${x}`;
+    },
+    hasPacmonInBoard(): boolean {
+      return this.board.some((row) =>
+        row.some((item) => item === BoardItem.PACMON)
+      );
+    },
+    getPacmonCoordinate(): Coordinate | null {
+      for (let y = 0; y < this.board.length; y++) {
+        for (let x = 0; x < this.board[y].length; x++) {
+          if (this.board[y][x] === BoardItem.PACMON) return { y, x };
+        }
+      }
+      return null;
+    },
+    hasSelectedCoordinate(): boolean {
+      return this.selectedCoordinate.length > 0;
     },
   },
   actions: {
@@ -53,16 +70,16 @@ export const useBoard = defineStore("board", {
       this.board[y][x] = payload;
     },
     setBulkBoardItem(payload: BoardItem) {
-      this.selectedCoorindate.forEach((coordinate) =>
+      this.selectedCoordinate.forEach((coordinate) =>
         this.setBoardItem(coordinate, payload)
       );
     },
     setSelectedCoordinate(coordinate: Coordinate) {
-      this.selectedCoorindate.push(coordinate);
+      this.selectedCoordinate.push(coordinate);
     },
     setBulkSelectedCoordinate(coordinate: Coordinate) {
       const lastSelectedCoordinate =
-        this.selectedCoorindate[this.selectedCoorindate.length - 1] ?? null;
+        this.selectedCoordinate[this.selectedCoordinate.length - 1] ?? null;
 
       if (!lastSelectedCoordinate) return;
 
@@ -84,50 +101,52 @@ export const useBoard = defineStore("board", {
       }
     },
     isInSelectedCoordinate(payload: Coordinate) {
-      return this.selectedCoorindate.some(
+      return this.selectedCoordinate.some(
         (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
       );
     },
     getSelectedCoordinateIndex(payload: Coordinate) {
-      return this.selectedCoorindate.findIndex(
+      return this.selectedCoordinate.findIndex(
         (coordinate) => JSON.stringify(payload) === JSON.stringify(coordinate)
       );
     },
     removeSelectedCoordinate(payload: Coordinate) {
-      this.selectedCoorindate.splice(
+      this.selectedCoordinate.splice(
         this.getSelectedCoordinateIndex(payload),
         1
       );
     },
     clearSelectedCoordinate() {
-      this.selectedCoorindate = [];
+      this.selectedCoordinate = [];
     },
-    generateBoardStepCount() {
-      this.boardStepCount = this.board.reduce((total, current, i) => {
+    generateCells() {
+      this.cells = this.board.reduce((cells, row, y) => {
         return [
-          ...total,
-          ...current.map((_, j) => ({
-            id: this.getBoardStepCountId({ y: i, x: j }),
+          ...cells,
+          ...row.map((_, x) => ({
+            id: this.getCellId({ y, x }),
             count: 0,
             swapDirection: null,
             callback: null,
+            resolve: null,
           })),
         ];
-      }, <BoardStep[]>[]);
+      }, <Cell[]>[]);
     },
-    setBoardStepCount<K extends keyof BoardStep>(
-      id: Coordinate,
-      key: K,
-      value: BoardStep[K]
-    ) {
-      const index = this.boardStepCount.findIndex(
-        (board) => board.id === this.getBoardStepCountId(id)
+    getCell(payload: Coordinate) {
+      return this.cells.find(
+        (item) => item.id === this.getCellId(payload)
+      ) as Cell;
+    },
+    setCell<K extends keyof Cell>(id: Coordinate, key: K, value: Cell[K]) {
+      const index = this.cells.findIndex(
+        (board) => board.id === this.getCellId(id)
       );
 
-      this.boardStepCount[index][key] = value;
+      this.cells[index][key] = value;
     },
-    changeBoardStepDirection(id: Coordinate, direction: Direction) {
-      this.setBoardStepCount(id, "swapDirection", direction);
+    setCellDirection(id: Coordinate, direction: Direction | null) {
+      this.setCell(id, "swapDirection", direction);
     },
   },
 });
