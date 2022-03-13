@@ -12,7 +12,7 @@
     <ZoomTransition :duration="300">
       <img
         v-if="!!props.item"
-        :class="['w-8', 'h-8', 'transition-transform', 'duration-1000']"
+        :class="['w-8', 'h-8', 'transition-transform', 'duration-500']"
         :src="boardItemImage[props.item]"
         :alt="props.item"
         ref="box"

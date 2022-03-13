@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axis from "@/constants/axis";
 
 export enum BoardItem {
   WALL = "wall",
@@ -147,6 +148,26 @@ export const useBoard = defineStore("board", {
     },
     setCellDirection(id: Coordinate, direction: Direction | null) {
       this.setCell(id, "swapDirection", direction);
+    },
+    swapCell({
+      currentCoordinate,
+      nextCoordinate,
+    }: {
+      currentCoordinate: Coordinate;
+      nextCoordinate: Coordinate;
+    }) {
+      axis.forEach(({ axis, direction }) => {
+        const { current, next } = {
+          current: currentCoordinate[axis as keyof Coordinate],
+          next: nextCoordinate[axis as keyof Coordinate],
+        };
+
+        if (current === next) return;
+        const index = current > next ? 0 : 1;
+
+        this.setCellDirection(currentCoordinate, direction[index % 2]);
+        this.setCellDirection(nextCoordinate, direction[(index + 1) % 2]);
+      });
     },
   },
 });

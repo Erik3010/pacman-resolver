@@ -1,4 +1,4 @@
-import { Direction } from "@/store/board";
+import { Direction } from "@/enums/Direction";
 
 const axis = [
   {

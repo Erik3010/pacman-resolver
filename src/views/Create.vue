@@ -40,8 +40,6 @@ import { useNotification, NotificationStatus } from "@/store/notification";
 import pathfinding, { Path } from "@/utils/pathfinding";
 import board from "@/utils/board-template";
 
-import axis from "@/constants/axis";
-
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
@@ -82,24 +80,6 @@ const startResolve = () => {
   generator.value = pathGenerator(paths);
 };
 
-const swapCell = (
-  currentCoordinate: Coordinate,
-  nextCoordinate: Coordinate
-) => {
-  axis.forEach(({ axis, direction }) => {
-    const { current, next } = {
-      current: currentCoordinate[axis as keyof Coordinate],
-      next: nextCoordinate[axis as keyof Coordinate],
-    };
-
-    if (current === next) return;
-    const index = current > next ? 0 : 1;
-
-    boardStore.setCellDirection(currentCoordinate, direction[index % 2]);
-    boardStore.setCellDirection(nextCoordinate, direction[(index + 1) % 2]);
-  });
-};
-
 const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
@@ -118,7 +98,10 @@ const animatePath = async () => {
       const current = boardStore.board[y][x];
       const next = boardStore.board[nextY][nextX];
 
-      swapCell({ y, x }, { y: nextY, x: nextX });
+      boardStore.swapCell({
+        currentCoordinate: { y, x },
+        nextCoordinate: { y: nextY, x: nextX },
+      });
 
       boardStore.setCell({ y, x }, "callback", () => {
         boardStore.setCell({ y, x }, "callback", null);
