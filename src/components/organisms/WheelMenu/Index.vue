@@ -39,27 +39,48 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+
 import WheelMenuItem from "@/components/organisms/WheelMenu/Item.vue";
 import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 
-import { ref } from "vue";
 import useContextMenu from "@/hooks/useContextMenu";
 
-import { useBoard, BoardItem } from "@/store/board";
+import { useBoard, BoardItem, Coordinate } from "@/store/board";
+import { useNotification, NotificationStatus } from "@/store/notification";
 
 const props = defineProps<{
   visible: Boolean;
 }>();
 
-const wheelMenu = ref<HTMLDivElement | null>(null);
-const { isVisible, positionStyle, closeContextMenu } = useContextMenu(
-  wheelMenu,
-  props.visible
-);
-
 const boardStore = useBoard();
+const notificationStore = useNotification();
+
+const wheelMenu = ref<HTMLDivElement | null>(null);
+const { isVisible, positionStyle, closeContextMenu } = useContextMenu({
+  element: wheelMenu,
+  initialVisible: props.visible,
+  canOpenContextMenu: () =>
+    boardStore.isAnimating || !boardStore.hasSelectedCoordinate,
+});
 
 const wheelItemHandler = (item: BoardItem) => {
+  if (item === BoardItem.PACMON) {
+    if (boardStore.selectedCoordinate.length > 1) {
+      notificationStore.show({
+        status: NotificationStatus.ERROR,
+        title: "Action Failed",
+        subtitle: "Only one pacmon is allowed",
+      });
+      return;
+    } else if (boardStore.hasPacmonInBoard) {
+      const lastPacmonCoordinate: Coordinate = boardStore.getPacmonCoordinate!;
+
+      const { y, x } = boardStore.selectedCoordinate[0];
+      boardStore.setBoardItem(lastPacmonCoordinate, boardStore.board[y][x]);
+    }
+  }
+
   boardStore.setBulkBoardItem(item);
 
   boardStore.clearSelectedCoordinate();

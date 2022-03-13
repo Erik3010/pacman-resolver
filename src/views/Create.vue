@@ -16,32 +16,37 @@
       </div>
     </main>
     <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
-      Resolve !
+      Resolve
     </Button>
-    <Button :classNames="['mx-auto', 'mt-5']" @click="getPath"> Get ! </Button>
-    <Button :classNames="['mx-auto', 'mt-5']" @click="test()"> Test ! </Button>
+    <Button :classNames="['mx-auto', 'mt-5']" @click="animatePath">
+      Animate
+    </Button>
 
     <WheelMenu :visible="false" />
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from "vue";
+import { useRouter } from "vue-router";
+
 import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 import Box from "@/components/organisms/Box.vue";
 
-import { useRouter } from "vue-router";
-
-import { useBoard, BoardItem, Direction, Coordinate } from "@/store/board";
+import { useBoard, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
+import board from "@/utils/board-test";
 
-import { onMounted, nextTick, ref } from "vue";
+import axis from "@/constants/axis";
 
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
+
+const generator = ref<Generator<Path | undefined, void, unknown> | null>(null);
 
 if (!boardStore.row || !boardStore.col) {
   notificationStore.show({
@@ -53,80 +58,6 @@ if (!boardStore.row || !boardStore.col) {
   router.push({ name: "Setup" });
 }
 
-const board = [
-  [
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-  ],
-  [
-    BoardItem.WALL,
-    BoardItem.PACMON,
-    BoardItem.STREET,
-    BoardItem.STREET,
-    BoardItem.WALL,
-  ],
-  [
-    BoardItem.WALL,
-    BoardItem.STREET,
-    BoardItem.WALL,
-    BoardItem.STREET,
-    BoardItem.WALL,
-  ],
-  [
-    BoardItem.WALL,
-    BoardItem.FOOD,
-    BoardItem.WALL,
-    BoardItem.FOOD,
-    BoardItem.WALL,
-  ],
-  [
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-    BoardItem.WALL,
-  ],
-];
-// const board = [
-//   [
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//   ],
-//   [
-//     BoardItem.WALL,
-//     BoardItem.PACMON,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//   ],
-//   [
-//     BoardItem.WALL,
-//     BoardItem.STREET,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//   ],
-//   [
-//     BoardItem.WALL,
-//     BoardItem.FOOD,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//   ],
-//   [
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//     BoardItem.WALL,
-//   ],
-// ];
 onMounted(async () => {
   boardStore.generateBoard();
   await nextTick();
@@ -135,110 +66,80 @@ onMounted(async () => {
 });
 
 function* pathGenerator(paths: Path[]) {
-  const temp = [...paths];
+  const route = [...paths];
 
-  while (temp.length) {
-    const current = temp.shift();
-    yield current;
+  while (route.length) {
+    yield route.shift();
   }
 }
-let generator: Generator<Path | undefined, void, unknown> | null = null;
 
 const startResolve = () => {
-  // TODO: Swap animation
-  // TODO: Add class to translate
-  // TODO: Swap item at the board
-  // TODO: Remove the class that used to translate
-  // boardStore.board[1][1] = BoardItem.STREET;
-  // boardStore.board[2][1] = BoardItem.PACMON;
-  // return;
-
   const paths = pathfinding(boardStore.board);
 
-  boardStore.generateBoardStepCount();
+  boardStore.generateCells();
   console.log(paths);
 
-  generator = pathGenerator(paths);
+  generator.value = pathGenerator(paths);
+};
+
+const swapCell = (
+  currentCoordinate: Coordinate,
+  nextCoordinate: Coordinate
+) => {
+  axis.forEach(({ axis, direction }) => {
+    const { current, next } = {
+      current: currentCoordinate[axis as keyof Coordinate],
+      next: nextCoordinate[axis as keyof Coordinate],
+    };
+
+    if (current === next) return;
+    const index = current > next ? 0 : 1;
+
+    boardStore.setCellDirection(currentCoordinate, direction[index % 2]);
+    boardStore.setCellDirection(nextCoordinate, direction[(index + 1) % 2]);
+  });
 };
 
 const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
-const getBoardId = (y: number, x: number) => `${y},${x}`;
+const animatePath = async () => {
+  boardStore.clearSelectedCoordinate();
+  boardStore.isAnimating = true;
 
-const temp = ref(true);
-const test = () => {
-  // boardStore.boardStepCount.find(
-  //   (item) => item.id === getBoardId(1, 1)
-  // )!.swapDirection = temp.value ? Direction.DOWN : null;
-  // temp.value = !temp.value;
-  boardStore.setBoardStepCount({ y: 1, x: 1 }, "swapDirection", Direction.UP);
-};
+  let route = generator.value!.next().value;
+  while (!!route) {
+    for (let i = 0; i < route.path.length; i++) {
+      if (i === route.path.length - 1) continue;
 
-const getPath = async () => {
-  let path = generator!.next().value;
-  while (!!path) {
-    for (let i = 0; i < path.path.length; i++) {
-      if (i === path.path.length - 1) continue;
+      const [y, x] = route.path[i];
+      const [nextY, nextX] = route.path[i + 1];
 
-      const p = path.path[i];
-      const nextP = path.path[i + 1];
-
-      const [y, x] = p;
-
-      const [curY, curX] = p;
-      const current = boardStore.board[curY][curX];
-
-      const [nextY, nextX] = nextP;
+      const current = boardStore.board[y][x];
       const next = boardStore.board[nextY][nextX];
 
-      const currentEntity: Coordinate = { y: curY, x: curX };
-      const nextEntity: Coordinate = { y: nextY, x: nextX };
-      const axis = [
-        {
-          axis: "x",
-          direction: [Direction.LEFT, Direction.RIGHT],
-        },
-        {
-          axis: "y",
-          direction: [Direction.UP, Direction.DOWN],
-        },
-      ];
+      swapCell({ y, x }, { y: nextY, x: nextX });
 
-      axis.forEach(({ axis, direction }) => {
-        const { current, next } = {
-          current: currentEntity[axis as keyof Coordinate],
-          next: nextEntity[axis as keyof Coordinate],
-        };
+      boardStore.setCell({ y, x }, "callback", () => {
+        boardStore.setCell({ y, x }, "callback", null);
 
-        if (current === next) return;
-        const index = current > next ? 0 : 1;
-
-        boardStore.changeBoardStepDirection(
-          currentEntity,
-          direction[index % 2]
-        );
-        boardStore.changeBoardStepDirection(
-          nextEntity,
-          direction[(index + 1) % 2]
-        );
+        boardStore.setBoardItem({ y, x }, next);
+        boardStore.setBoardItem({ y: nextY, x: nextX }, current);
       });
 
       await new Promise<void>((resolve) => {
-        boardStore.boardStepCount.find(
-          (item) => item.id === `${y},${x}`
-        )!.callback = async () => {
-          boardStore.setBoardItem({ y: curY, x: curX }, next);
-          boardStore.setBoardItem({ y: nextY, x: nextX }, current);
+        boardStore.setCell({ y, x }, "resolve", async () => {
+          boardStore.setCell({ y, x }, "resolve", null);
 
-          await sleep(1100);
-
+          // prepare for previous
+          await sleep(0);
           resolve();
-        };
+        });
       });
     }
-
-    path = generator!.next().value;
+    route = generator.value!.next().value;
   }
+
+  boardStore.isAnimating = false;
 };
 </script>

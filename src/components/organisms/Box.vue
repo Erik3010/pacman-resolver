@@ -4,24 +4,15 @@
       'box',
       'select-none',
       { 'box--active': boardStore.isInSelectedCoordinate(props.coordinate) },
+      { 'cursor-not-allowed': boardStore.isAnimating },
+      { 'cursor-pointer': !boardStore.isAnimating },
     ]"
     @click="clickHandler(props.coordinate)"
   >
     <ZoomTransition :duration="300">
       <img
         v-if="!!props.item"
-        :class="[
-          'w-8',
-          'h-8',
-          'transition-transform',
-          'duration-1000',
-          {
-            [boardStore.boardStepCount.find(
-              (item) =>
-                item.id === `${props.coordinate.y},${props.coordinate.x}`
-            )?.swapDirection ?? '']: isAnimating,
-          },
-        ]"
+        :class="['w-8', 'h-8', 'transition-transform', 'duration-1000']"
         :src="boardItemImage[props.item]"
         :alt="props.item"
         ref="box"
@@ -31,16 +22,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from "vue";
+import { ref, watch } from "vue";
 
 import { useBoard, Coordinate, BoardItem } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
+import usePromiseAnimation from "@/hooks/usePromiseAnimation";
+
 import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 
-import Street from "@/assets/street.png";
-import Food from "@/assets/food.png";
-import Pacmon from "@/assets/pacmon.png";
-import Wall from "@/assets/wall.png";
+import boardItemImage from "@/constants/cell-image";
 
 const props = defineProps<{
   coordinate: Coordinate;
@@ -50,14 +40,11 @@ const props = defineProps<{
 const boardStore = useBoard();
 const { isShiftKeyPressed } = useShiftKey();
 
-const boardItemImage = {
-  [BoardItem.STREET]: Street,
-  [BoardItem.FOOD]: Food,
-  [BoardItem.PACMON]: Pacmon,
-  [BoardItem.WALL]: Wall,
-};
+const box = ref<HTMLDivElement | null>(null);
 
 const clickHandler = (coordinate: Coordinate) => {
+  if (boardStore.isAnimating) return;
+
   if (boardStore.isInSelectedCoordinate(coordinate)) {
     boardStore.removeSelectedCoordinate(coordinate);
     return;
@@ -70,51 +57,28 @@ const clickHandler = (coordinate: Coordinate) => {
   }
 };
 
-const box = ref<HTMLDivElement | null>(null);
-const isAnimating = ref(false);
-const direction = boardStore.boardStepCount.find(
-  (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
-);
-
-const sleep = (time = 500) =>
-  new Promise((resolve) => setTimeout(resolve, time));
-
 watch(
-  () =>
-    boardStore.boardStepCount.find(
-      (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
-    ),
-  (val) => {
-    // if (!val?.swapDirection || !box.value) return;
-    if (!box.value) return;
+  () => boardStore.getCell(props.coordinate)?.swapDirection,
+  async (direction) => {
+    if (!box.value || !direction) return;
 
-    isAnimating.value = true;
+    const { callback, resolve } = boardStore.getCell(props.coordinate);
+    const { animate } = usePromiseAnimation(box);
 
-    const cb = async () => {
-      box.value!.removeEventListener("transitionend", cb);
+    await animate(direction!);
+    callback && callback();
+    await animate(direction!, { unmountClass: true });
 
-      val?.callback && val?.callback();
+    boardStore.setCellDirection(props.coordinate, null);
 
-      isAnimating.value = false;
-
-      boardStore.boardStepCount.find(
-        (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
-      )!.swapDirection = null;
-
-      boardStore.boardStepCount.find(
-        (item) => item.id === `${props.coordinate.y},${props.coordinate.x}`
-      )!.callback = null;
-    };
-
-    box.value!.addEventListener("transitionend", cb);
-  },
-  { deep: true }
+    resolve && (await resolve());
+  }
 );
 </script>
 
 <style scoped>
 .box {
-  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-center overflow-hidden;
+  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg transition duration-300 ease-in-out flex items-center justify-center overflow-hidden;
 }
 .box--active {
   @apply border-2 border-blue-600 scale-110 bg-main;
