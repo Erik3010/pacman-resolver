@@ -38,7 +38,7 @@ import { useBoard, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
-import board from "@/utils/board-test";
+import board from "@/utils/board-template";
 
 import axis from "@/constants/axis";
 
