@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import axis from "@/constants/axis";
 
+import { Direction } from "@/enums/Direction";
+import { Cell } from "@/types/Cell";
+
 export enum BoardItem {
   WALL = "wall",
   FOOD = "food",
@@ -9,24 +12,9 @@ export enum BoardItem {
   EMPTY = "",
 }
 
-export enum Direction {
-  UP = "up",
-  DOWN = "down",
-  LEFT = "left",
-  RIGHT = "right",
-}
-
 export interface Coordinate {
   x: number;
   y: number;
-}
-
-export interface Cell {
-  id: string;
-  count: number;
-  swapDirection: Direction | null;
-  callback: (() => void) | null;
-  resolve: (() => Promise<void>) | null;
 }
 
 export type Board = Array<Array<BoardItem>>;
