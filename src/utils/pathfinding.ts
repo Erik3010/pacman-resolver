@@ -1,6 +1,5 @@
 import { Board } from "@/types/Board";
 import { BoardItem } from "@/types/BoardItem";
-
 import { MatrixCoordinate } from "@/types/MatrixCoordinate";
 import { Path } from "@/types/Path";
 import { Stack } from "@/types/Stack";

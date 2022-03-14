@@ -24,13 +24,15 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import { Coordinate } from "@/types/Coordinate";
-import { BoardItem } from "@/types/BoardItem";
-import { useBoard } from "@/store/board";
+import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
+
 import useShiftKey from "@/hooks/useShiftKey";
 import usePromiseAnimation from "@/hooks/usePromiseAnimation";
 
-import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
+import { Coordinate } from "@/types/Coordinate";
+import { BoardItem } from "@/types/BoardItem";
+
+import { useBoard } from "@/store/board";
 
 import boardItemImage from "@/constants/cell-image";
 

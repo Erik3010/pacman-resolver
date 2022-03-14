@@ -46,11 +46,13 @@ import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 
 import useContextMenu from "@/hooks/useContextMenu";
 
+import { NotificationStatus } from "@/enums/NotificationStatus";
+
 import { Coordinate } from "@/types/Coordinate";
 import { BoardItem } from "@/types/BoardItem";
+
 import { useBoard } from "@/store/board";
 import { useNotification } from "@/store/notification";
-import { NotificationStatus } from "@/enums/NotificationStatus";
 
 const props = defineProps<{
   visible: Boolean;

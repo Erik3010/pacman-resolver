@@ -36,10 +36,12 @@ import Box from "@/components/organisms/Box.vue";
 
 import { useBoard } from "@/store/board";
 import { useNotification } from "@/store/notification";
+
 import { NotificationStatus } from "@/enums/NotificationStatus";
 
-import pathfinding from "@/utils/pathfinding";
 import { Path } from "@/types/Path";
+
+import pathfinding from "@/utils/pathfinding";
 import board from "@/utils/board-template";
 
 const router = useRouter();

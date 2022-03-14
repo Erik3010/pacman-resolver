@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import axis from "@/constants/axis";
 
 import { Direction } from "@/enums/Direction";
 
@@ -7,6 +6,8 @@ import { Cell } from "@/types/Cell";
 import { BoardItem } from "@/types/BoardItem";
 import { Coordinate } from "@/types/Coordinate";
 import { Board } from "@/types/Board";
+
+import axis from "@/constants/axis";
 
 export const useBoard = defineStore("board", {
   state: () => ({
