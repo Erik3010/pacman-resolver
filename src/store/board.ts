@@ -5,8 +5,7 @@ import { Direction } from "@/enums/Direction";
 import { Cell } from "@/types/Cell";
 import { BoardItem } from "@/types/BoardItem";
 import { Coordinate } from "@/types/Coordinate";
-
-export type Board = Array<Array<BoardItem>>;
+import { Board } from "@/types/Board";
 
 export const useBoard = defineStore("board", {
   state: () => ({

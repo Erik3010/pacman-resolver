@@ -1,4 +1,4 @@
-import { Board } from "@/store/board";
+import { Board } from "@/types/Board";
 import { BoardItem } from "@/types/BoardItem";
 
 type Coordinate = [number, number];
