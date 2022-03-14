@@ -1,14 +1,8 @@
 import { ref, computed, Ref, onUnmounted, nextTick } from "vue";
-
-interface ContextMenuPosition {
-  top: number;
-  left: number;
-}
-
-interface ContextMenuPositionStyle {
-  top: string;
-  left: string;
-}
+import {
+  ContextMenuPosition,
+  ContextMenuPositionStyle,
+} from "@/types/ContextMenu";
 
 const useContextMenu = ({
   element,
