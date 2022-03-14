@@ -24,8 +24,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
+import { Coordinate } from "@/types/Coordinate";
 import { BoardItem } from "@/types/BoardItem";
-import { useBoard, Coordinate } from "@/store/board";
+import { useBoard } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
 import usePromiseAnimation from "@/hooks/usePromiseAnimation";
 

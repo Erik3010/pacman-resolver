@@ -4,11 +4,7 @@ import axis from "@/constants/axis";
 import { Direction } from "@/enums/Direction";
 import { Cell } from "@/types/Cell";
 import { BoardItem } from "@/types/BoardItem";
-
-export interface Coordinate {
-  x: number;
-  y: number;
-}
+import { Coordinate } from "@/types/Coordinate";
 
 export type Board = Array<Array<BoardItem>>;
 
