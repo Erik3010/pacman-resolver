@@ -1,4 +1,4 @@
-import { BoardItem } from "@/store/board";
+import { BoardItem } from "@/types/BoardItem";
 
 import Street from "@/assets/street.png";
 import Food from "@/assets/food.png";

@@ -1,4 +1,4 @@
-import { BoardItem } from "@/store/board";
+import { BoardItem } from "@/types/BoardItem";
 
 const board = [
   [

@@ -3,14 +3,7 @@ import axis from "@/constants/axis";
 
 import { Direction } from "@/enums/Direction";
 import { Cell } from "@/types/Cell";
-
-export enum BoardItem {
-  WALL = "wall",
-  FOOD = "food",
-  STREET = "street",
-  PACMON = "pacmon",
-  EMPTY = "",
-}
+import { BoardItem } from "@/types/BoardItem";
 
 export interface Coordinate {
   x: number;

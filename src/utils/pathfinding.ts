@@ -1,4 +1,5 @@
-import { Board, BoardItem } from "@/store/board";
+import { Board } from "@/store/board";
+import { BoardItem } from "@/types/BoardItem";
 
 type Coordinate = [number, number];
 type Stack = {

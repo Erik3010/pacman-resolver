@@ -12,7 +12,7 @@
     <ZoomTransition :duration="300">
       <img
         v-if="!!props.item"
-        :class="['w-8', 'h-8', 'transition-transform', 'duration-500']"
+        :class="['w-8', 'h-8', 'transition-transform', 'duration-300']"
         :src="boardItemImage[props.item]"
         :alt="props.item"
         ref="box"
@@ -24,7 +24,8 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import { useBoard, Coordinate, BoardItem } from "@/store/board";
+import { BoardItem } from "@/types/BoardItem";
+import { useBoard, Coordinate } from "@/store/board";
 import useShiftKey from "@/hooks/useShiftKey";
 import usePromiseAnimation from "@/hooks/usePromiseAnimation";
 

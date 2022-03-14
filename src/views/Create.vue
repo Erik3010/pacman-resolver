@@ -34,7 +34,7 @@ import Button from "@/components/atoms/Button.vue";
 import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 import Box from "@/components/organisms/Box.vue";
 
-import { useBoard, Coordinate } from "@/store/board";
+import { useBoard } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 import pathfinding, { Path } from "@/utils/pathfinding";

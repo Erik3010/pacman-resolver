@@ -46,7 +46,8 @@ import ZoomTransition from "@/components/transitions/ZoomTransition.vue";
 
 import useContextMenu from "@/hooks/useContextMenu";
 
-import { useBoard, BoardItem, Coordinate } from "@/store/board";
+import { BoardItem } from "@/types/BoardItem";
+import { useBoard, Coordinate } from "@/store/board";
 import { useNotification, NotificationStatus } from "@/store/notification";
 
 const props = defineProps<{
