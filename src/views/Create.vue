@@ -38,7 +38,8 @@ import { useBoard } from "@/store/board";
 import { useNotification } from "@/store/notification";
 import { NotificationStatus } from "@/enums/NotificationStatus";
 
-import pathfinding, { Path } from "@/utils/pathfinding";
+import pathfinding from "@/utils/pathfinding";
+import { Path } from "@/types/Path";
 import board from "@/utils/board-template";
 
 const router = useRouter();
