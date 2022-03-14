@@ -49,7 +49,8 @@ import useContextMenu from "@/hooks/useContextMenu";
 import { Coordinate } from "@/types/Coordinate";
 import { BoardItem } from "@/types/BoardItem";
 import { useBoard } from "@/store/board";
-import { useNotification, NotificationStatus } from "@/store/notification";
+import { useNotification } from "@/store/notification";
+import { NotificationStatus } from "@/enums/NotificationStatus";
 
 const props = defineProps<{
   visible: Boolean;

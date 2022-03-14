@@ -67,7 +67,8 @@ import TextField from "@/components/atoms/TextField.vue";
 import Button from "@/components/atoms/Button.vue";
 
 import { useBoard } from "@/store/board";
-import { useNotification, NotificationStatus } from "@/store/notification";
+import { useNotification } from "@/store/notification";
+import { NotificationStatus } from "@/enums/NotificationStatus";
 
 const router = useRouter();
 const boardStore = useBoard();

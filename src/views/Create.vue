@@ -35,7 +35,8 @@ import WheelMenu from "@/components/organisms/WheelMenu/Index.vue";
 import Box from "@/components/organisms/Box.vue";
 
 import { useBoard } from "@/store/board";
-import { useNotification, NotificationStatus } from "@/store/notification";
+import { useNotification } from "@/store/notification";
+import { NotificationStatus } from "@/enums/NotificationStatus";
 
 import pathfinding, { Path } from "@/utils/pathfinding";
 import board from "@/utils/board-template";

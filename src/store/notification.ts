@@ -1,9 +1,6 @@
 import { defineStore } from "pinia";
 
-export enum NotificationStatus {
-  ERROR = "error",
-  SUCCESS = "success",
-}
+import { NotificationStatus } from "@/enums/NotificationStatus";
 
 interface RootState {
   isShow: boolean;

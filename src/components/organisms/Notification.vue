@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import { useNotification } from "@/store/notification";
-import { NotificationStatus } from "@/store/notification";
+import { NotificationStatus } from "@/enums/NotificationStatus";
 import SlideTransition from "@/components/transitions/SlideTransition.vue";
 
 const notificationStore = useNotification();
