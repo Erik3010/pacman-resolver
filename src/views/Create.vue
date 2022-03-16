@@ -15,11 +15,12 @@
         </div>
       </div>
     </main>
-    <Button :classNames="['mx-auto', 'mt-12']" @click="startResolve">
-      Resolve
-    </Button>
-    <Button :classNames="['mx-auto', 'mt-5']" @click="animatePath">
-      Animate
+    <Button
+      :classNames="['mx-auto', 'mt-12']"
+      :disabled="boardStore.isAnimating"
+      @click="startResolve"
+    >
+      {{ buttonText }}
     </Button>
 
     <WheelMenu :visible="false" />
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import Button from "@/components/atoms/Button.vue";
@@ -47,6 +48,10 @@ import board from "@/utils/board-template";
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
+
+const buttonText = computed(() =>
+  boardStore.isAnimating ? "Resolving..." : "Resolve!"
+);
 
 const generator = ref<Generator<Path | undefined, void, unknown> | null>(null);
 
@@ -75,17 +80,21 @@ function* pathGenerator(paths: Path[]) {
   }
 }
 
+const sleep = (time = 500) =>
+  new Promise((resolve) => setTimeout(resolve, time));
+
 const startResolve = () => {
+  if (boardStore.isAnimating) return;
+
   const paths = pathfinding(boardStore.board);
 
   boardStore.generateCells();
   console.log(paths);
 
   generator.value = pathGenerator(paths);
-};
 
-const sleep = (time = 500) =>
-  new Promise((resolve) => setTimeout(resolve, time));
+  animatePath();
+};
 
 const animatePath = async () => {
   boardStore.clearSelectedCoordinate();

@@ -22,6 +22,9 @@ const props = defineProps<{
           transition
           ease-in-out
           duration-300
+          disabled:bg-gray-800
+          disabled:shadow-none
+          disabled:cursor-not-allowed
           focus:outline-none
           focus:ring-2
           focus:ring-offset-2
