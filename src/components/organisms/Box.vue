@@ -3,11 +3,13 @@
     :class="[
       'box',
       'select-none',
+      'm-1',
       { 'box--active': boardStore.isInSelectedCoordinate(props.coordinate) },
       { 'cursor-not-allowed': boardStore.isAnimating },
       { 'cursor-pointer': !boardStore.isAnimating },
     ]"
     @click="clickHandler(props.coordinate)"
+    :data-coordinate="`${props.coordinate.y}|${props.coordinate.x}`"
   >
     <ZoomTransition :duration="300">
       <img

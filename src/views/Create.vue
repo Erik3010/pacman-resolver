@@ -5,14 +5,40 @@
       <p class="text-gray-400 text-sm">Put the obstacle inside the board</p>
     </header>
     <main class="flex flex-col items-center" ref="main">
-      <div class="space-y-3">
-        <div class="flex space-x-3" v-for="(row, y) in boardStore.board">
+      <!-- <div class="space-y-3"> -->
+      <div
+        class="grid"
+        :style="{
+          gridTemplateColumns: `repeat(${boardStore.col}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${boardStore.row}, minmax(0, 1fr))`,
+        }"
+      >
+        <!-- <TransitionGroup name="fade">
+          <div
+            class="flex space-x-3"
+            v-for="(row, y) in boardStore.board"
+            :key="y"
+          >
+            <Box
+              v-for="(column, x) in row"
+              :key="x"
+              :coordinate="{ y, x }"
+              :item="column"
+              :style="{ transitionDelay: `${row.length * x * 0.01}s` }"
+            />
+          </div>
+        </TransitionGroup> -->
+        <TransitionGroup name="fade">
           <Box
-            v-for="(column, x) in row"
-            :coordinate="{ y, x }"
-            :item="column"
+            v-for="(item, index) in boardGrid"
+            :key="index"
+            :coordinate="item.id"
+            :item="item.value"
+            :style="{
+              '--transitionDelay': `${boardGrid.length * index * 0.003}s`,
+            }"
           />
-        </div>
+        </TransitionGroup>
       </div>
     </main>
     <Button
@@ -65,11 +91,18 @@ if (!boardStore.row || !boardStore.col) {
   router.push({ name: "Setup" });
 }
 
+const boardGrid = computed(() => {
+  return boardStore.board.reduce((total: any, row, y) => {
+    total.push(...row.map((item, x) => ({ id: { y, x }, value: item })));
+    return total;
+  }, []);
+});
+
 onMounted(async () => {
   boardStore.generateBoard();
   await nextTick();
 
-  boardStore.board = board;
+  // boardStore.board = board;
 });
 
 function* pathGenerator(paths: Path[]) {
@@ -139,3 +172,18 @@ const animatePath = async () => {
   boardStore.isAnimating = false;
 };
 </script>
+
+<style>
+.fade-move {
+  transition: opacity 0.2s ease var(--transitionDelay);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease var(--transitionDelay);
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(1.25);
+}
+</style>
