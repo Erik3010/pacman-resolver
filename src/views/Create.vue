@@ -35,7 +35,7 @@
             :coordinate="item.id"
             :item="item.value"
             :style="{
-              '--transitionDelay': `${boardGrid.length * index * 0.003}s`,
+              '--transitionDelay': `${index * TRANSITION_DELAY}s`,
             }"
           />
         </TransitionGroup>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed } from "vue";
+import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import Button from "@/components/atoms/Button.vue";
@@ -70,6 +70,10 @@ import { Path } from "@/types/Path";
 
 import pathfinding from "@/utils/pathfinding";
 import board from "@/utils/board-template";
+
+const TRANSITION_DELAY = 0.1;
+const MS_TO_SECOND = 1000;
+const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const router = useRouter();
 const boardStore = useBoard();
@@ -99,10 +103,18 @@ const boardGrid = computed(() => {
 });
 
 onMounted(async () => {
+  boardStore.isAnimating = true;
+
   boardStore.generateBoard();
   await nextTick();
 
-  // boardStore.board = board;
+  const animationDuration =
+    boardStore.row * boardStore.col * TRANSITION_DELAY * MS_TO_SECOND;
+
+  timeout.value = setTimeout(
+    () => (boardStore.isAnimating = false),
+    animationDuration
+  );
 });
 
 function* pathGenerator(paths: Path[]) {
@@ -160,7 +172,7 @@ const animatePath = async () => {
         boardStore.setCell({ y, x }, "resolve", async () => {
           boardStore.setCell({ y, x }, "resolve", null);
 
-          // prepare for previous
+          // wait for next frame update
           await sleep(0);
           resolve();
         });
@@ -171,15 +183,20 @@ const animatePath = async () => {
 
   boardStore.isAnimating = false;
 };
+
+onUnmounted(() => {
+  boardStore.resetBoard();
+  timeout.value && clearTimeout(timeout.value);
+});
 </script>
 
 <style>
 .fade-move {
-  transition: opacity 0.2s ease var(--transitionDelay);
+  transition: 0.2s ease var(--transitionDelay);
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease var(--transitionDelay);
+  transition: 0.3s ease var(--transitionDelay);
 }
 .fade-enter-from,
 .fade-leave-to {

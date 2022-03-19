@@ -98,6 +98,15 @@ export const useBoard = defineStore("board", {
     clearSelectedCoordinate() {
       this.selectedCoordinate = [];
     },
+    resetBoard() {
+      this.clearSelectedCoordinate();
+      this.board = [];
+      this.row = 0;
+      this.col = 0;
+
+      this.cells = [];
+      this.isAnimating = false;
+    },
     generateCells() {
       this.cells = this.board.reduce((cells, row, y) => {
         return [
