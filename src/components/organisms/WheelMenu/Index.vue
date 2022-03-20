@@ -65,8 +65,10 @@ const wheelMenu = ref<HTMLDivElement | null>(null);
 const { isVisible, positionStyle, closeContextMenu } = useContextMenu({
   element: wheelMenu,
   initialVisible: props.visible,
-  canOpenContextMenu: () =>
-    boardStore.isAnimating || !boardStore.hasSelectedCoordinate,
+  cantOpenContextMenu: () =>
+    boardStore.isAnimating ||
+    boardStore.isAnimatingInitialAnimation ||
+    !boardStore.hasSelectedCoordinate,
 });
 
 const wheelItemHandler = (item: BoardItem) => {

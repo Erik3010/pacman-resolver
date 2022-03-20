@@ -7,11 +7,11 @@ import {
 const useContextMenu = ({
   element,
   initialVisible,
-  canOpenContextMenu,
+  cantOpenContextMenu,
 }: {
   element: Ref<HTMLDivElement | null>;
   initialVisible: Boolean;
-  canOpenContextMenu: () => boolean;
+  cantOpenContextMenu: () => boolean;
 }) => {
   const isVisible = ref(initialVisible || false);
   const position = ref<ContextMenuPosition>({ top: 0, left: 0 });
@@ -58,7 +58,7 @@ const useContextMenu = ({
   const contextMenuHandler = async (event: MouseEvent) => {
     event.preventDefault();
 
-    if (canOpenContextMenu()) return;
+    if (cantOpenContextMenu()) return;
 
     const targetPosition = {
       top: event.pageY,

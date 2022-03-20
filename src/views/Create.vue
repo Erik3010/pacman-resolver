@@ -43,7 +43,9 @@
     </main>
     <Button
       :classNames="['mx-auto', 'mt-12']"
-      :disabled="boardStore.isAnimating"
+      :disabled="
+        boardStore.isAnimating || boardStore.isAnimatingInitialAnimation
+      "
       @click="startResolve"
     >
       {{ buttonText }}
@@ -103,7 +105,7 @@ const boardGrid = computed(() => {
 });
 
 onMounted(async () => {
-  boardStore.isAnimating = true;
+  boardStore.isAnimatingInitialAnimation = true;
 
   boardStore.generateBoard();
   await nextTick();
@@ -112,7 +114,7 @@ onMounted(async () => {
     boardStore.row * boardStore.col * TRANSITION_DELAY * MS_TO_SECOND;
 
   timeout.value = setTimeout(
-    () => (boardStore.isAnimating = false),
+    () => (boardStore.isAnimatingInitialAnimation = false),
     animationDuration
   );
 });
@@ -129,7 +131,7 @@ const sleep = (time = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
 const startResolve = () => {
-  if (boardStore.isAnimating) return;
+  if (boardStore.isAnimating || boardStore.isAnimatingInitialAnimation) return;
 
   const paths = pathfinding(boardStore.board);
 

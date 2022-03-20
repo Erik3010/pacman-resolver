@@ -17,6 +17,7 @@ export const useBoard = defineStore("board", {
     selectedCoordinate: <Coordinate[]>[],
     cells: <Cell[]>[],
     isAnimating: false,
+    isAnimatingInitialAnimation: false,
   }),
   getters: {
     getCellId() {
