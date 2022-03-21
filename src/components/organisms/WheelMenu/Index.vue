@@ -28,7 +28,7 @@
           @click="wheelItemHandler(BoardItem.EMPTY)"
         >
           <div
-            class="rounded-full w-full h-full bg-gray-800 hover:bg-gray-700 cursor-pointer flex justify-center items-center text-2xl"
+            class="rounded-full w-full h-full bg-gray-800 cursor-pointer flex justify-center items-center text-2xl hover:bg-gray-700"
           >
             <img src="@/assets/remove.png" class="w-7 h-7" />
           </div>
