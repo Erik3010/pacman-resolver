@@ -54,6 +54,7 @@ const inputHandler = (event: Event) => {
 .input__field {
   @apply shadow-md
         bg-gray-800
+        h-full
         border-t border-gray-700
         rounded-md
         appearance-none
@@ -61,7 +62,6 @@ const inputHandler = (event: Event) => {
         py-3
         pr-5
         pl-12
-        h-full
         placeholder-gray-400
         font-semibold
         transition
