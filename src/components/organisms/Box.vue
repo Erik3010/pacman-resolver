@@ -84,7 +84,7 @@ watch(
 
 <style scoped>
 .box {
-  @apply w-14 h-14 bg-gray-800 hover:bg-main rounded-lg transition duration-300 ease-in-out flex items-center justify-center overflow-hidden;
+  @apply w-14 h-14 bg-gray-800 rounded-lg transition duration-300 ease-in-out flex items-center justify-center overflow-hidden hover:bg-main;
 }
 .box--active {
   @apply border-2 border-blue-600 scale-110 bg-main;
