@@ -71,7 +71,8 @@ import { NotificationStatus } from "@/enums/NotificationStatus";
 import { Path } from "@/types/Path";
 
 import pathfinding from "@/utils/pathfinding";
-import board from "@/utils/board-template";
+// import board from "@/utils/board-template";
+import { BoardItem } from "@/types/BoardItem";
 
 const TRANSITION_DELAY = 0.1;
 const MS_TO_SECOND = 1000;
@@ -110,7 +111,7 @@ onMounted(async () => {
   boardStore.generateBoard();
   await nextTick();
 
-  boardStore.board = board;
+  // boardStore.board = board;
 
   const animationDuration =
     boardStore.row * boardStore.col * TRANSITION_DELAY * MS_TO_SECOND;
@@ -168,7 +169,10 @@ const animatePath = async () => {
       boardStore.setCell({ y, x }, "swap", () => {
         boardStore.setCell({ y, x }, "swap", null);
 
-        boardStore.setBoardItem({ y, x }, next);
+        boardStore.setBoardItem(
+          { y, x },
+          next === BoardItem.FOOD ? BoardItem.STREET : next
+        );
         boardStore.setBoardItem({ y: nextY, x: nextX }, current);
       });
 
