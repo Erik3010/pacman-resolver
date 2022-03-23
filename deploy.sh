@@ -11,7 +11,7 @@ cd dist
 
 git init
 git add -A
-git commit -m 'deploy'
+git commit -m 'deployment'
 
 git push -f git@github.com:Erik3010/pacman-resolver.git master:gh-pages
 
