@@ -1,0 +1,1 @@
+import{_ as o}from"./index.21dff4f4.js";import{d as a,o as r,c as n,r as _,q as c}from"./vendor.cfaae494.js";const l=a({props:{classNames:null},setup(e){const s=e;return(t,d)=>(r(),n("button",{class:c(["button",s.classNames])},[_(t.$slots,"default",{},void 0,!0)],2))}});var f=o(l,[["__scopeId","data-v-41d8e57d"]]);export{f as B};
