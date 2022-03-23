@@ -11,8 +11,8 @@ import axis from "@/constants/axis";
 
 export const useBoard = defineStore("board", {
   state: () => ({
-    row: 0,
-    col: 0,
+    row: 5,
+    col: 5,
     board: <Board>[],
     selectedCoordinate: <Coordinate[]>[],
     cells: <Cell[]>[],
@@ -116,7 +116,7 @@ export const useBoard = defineStore("board", {
             id: this.getCellId({ y, x }),
             count: 0,
             swapDirection: null,
-            callback: null,
+            swap: null,
             resolve: null,
           })),
         ];

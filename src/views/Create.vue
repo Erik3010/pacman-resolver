@@ -110,6 +110,8 @@ onMounted(async () => {
   boardStore.generateBoard();
   await nextTick();
 
+  boardStore.board = board;
+
   const animationDuration =
     boardStore.row * boardStore.col * TRANSITION_DELAY * MS_TO_SECOND;
 
@@ -163,8 +165,8 @@ const animatePath = async () => {
         nextCoordinate: { y: nextY, x: nextX },
       });
 
-      boardStore.setCell({ y, x }, "callback", () => {
-        boardStore.setCell({ y, x }, "callback", null);
+      boardStore.setCell({ y, x }, "swap", () => {
+        boardStore.setCell({ y, x }, "swap", null);
 
         boardStore.setBoardItem({ y, x }, next);
         boardStore.setBoardItem({ y: nextY, x: nextX }, current);

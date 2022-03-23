@@ -68,11 +68,11 @@ watch(
   async (direction) => {
     if (!box.value || !direction) return;
 
-    const { callback, resolve } = boardStore.getCell(props.coordinate);
+    const { swap, resolve } = boardStore.getCell(props.coordinate);
     const { animate } = usePromiseAnimation(box);
 
     await animate(direction!);
-    callback && callback();
+    swap && swap();
     await animate(direction!, { unmountClass: true });
 
     boardStore.setCellDirection(props.coordinate, null);
