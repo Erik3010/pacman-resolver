@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
+    "build:prod": "vue-tsc --noEmit && vite build --base=/pacman-resolver/",
     "preview": "vite preview",
     "deploy": "sh deploy.sh"
   },
