@@ -39,6 +39,11 @@ export const useBoard = defineStore("board", {
     hasSelectedCoordinate(): boolean {
       return this.selectedCoordinate.length > 0;
     },
+    isBoardHasEmptyCell(): boolean {
+      return this.board.some((row) =>
+        row.some((row) => row === BoardItem.EMPTY)
+      );
+    },
   },
   actions: {
     generateBoard() {

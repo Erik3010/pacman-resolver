@@ -44,7 +44,9 @@
     <Button
       :classNames="['mx-auto', 'mt-12']"
       :disabled="
-        boardStore.isAnimating || boardStore.isAnimatingInitialAnimation
+        boardStore.isAnimating ||
+        boardStore.isAnimatingInitialAnimation ||
+        boardStore.isBoardHasEmptyCell
       "
       @click="startResolve"
     >
