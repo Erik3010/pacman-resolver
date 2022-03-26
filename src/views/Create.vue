@@ -6,13 +6,7 @@
     </header>
     <main class="flex flex-col items-center" ref="main">
       <!-- <div class="space-y-3"> -->
-      <div
-        class="grid"
-        :style="{
-          gridTemplateColumns: `repeat(${boardStore.col}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${boardStore.row}, minmax(0, 1fr))`,
-        }"
-      >
+      <div class="grid" :style="gridStyles">
         <!-- <TransitionGroup name="fade">
           <div
             class="flex space-x-3"
@@ -87,6 +81,12 @@ const notificationStore = useNotification();
 const buttonText = computed(() =>
   boardStore.isAnimating ? "Resolving..." : "Resolve!"
 );
+const gridStyles = computed(() => {
+  return {
+    gridTemplateColumns: `repeat(${boardStore.col}, minmax(0, 1fr))`,
+    gridTemplateRows: `repeat(${boardStore.row}, minmax(0, 1fr))`,
+  };
+});
 
 const generator = ref<Generator<Path | undefined, void, unknown> | null>(null);
 
