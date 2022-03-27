@@ -37,12 +37,12 @@
     </main>
     <Button
       :classNames="['mx-auto', 'mt-12']"
+      @click="startResolve"
       :disabled="
         boardStore.isAnimating ||
         boardStore.isAnimatingInitialAnimation ||
         boardStore.isBoardHasEmptyCell
       "
-      @click="startResolve"
     >
       {{ buttonText }}
     </Button>
