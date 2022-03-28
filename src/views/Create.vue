@@ -38,11 +38,7 @@
     <Button
       :classNames="['mx-auto', 'mt-12']"
       @click="startResolve"
-      :disabled="
-        boardStore.isAnimating ||
-        boardStore.isAnimatingInitialAnimation ||
-        boardStore.isBoardHasEmptyCell
-      "
+      :disabled="disabledResolveButton"
     >
       {{ buttonText }}
     </Button>
@@ -86,6 +82,13 @@ const gridStyles = computed(() => {
     gridTemplateColumns: `repeat(${boardStore.col}, minmax(0, 1fr))`,
     gridTemplateRows: `repeat(${boardStore.row}, minmax(0, 1fr))`,
   };
+});
+const disabledResolveButton = computed(() => {
+  return (
+    boardStore.isAnimating ||
+    boardStore.isAnimatingInitialAnimation ||
+    boardStore.isBoardHasEmptyCell
+  );
 });
 
 const generator = ref<Generator<Path | undefined, void, unknown> | null>(null);
