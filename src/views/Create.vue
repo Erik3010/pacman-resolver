@@ -73,6 +73,7 @@ const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
 const router = useRouter();
 const boardStore = useBoard();
 const notificationStore = useNotification();
+const latestBoardState = ref<BoardItem[][]>([]);
 
 const buttonText = computed(() =>
   boardStore.isAnimating ? "Resolving..." : "Resolve!"
@@ -141,6 +142,8 @@ const sleep = (time = 500) =>
 const startResolve = () => {
   if (boardStore.isAnimating || boardStore.isAnimatingInitialAnimation) return;
 
+  latestBoardState.value = JSON.parse(JSON.stringify(boardStore.board));
+
   const paths = pathfinding(boardStore.board);
 
   boardStore.generateCells();
@@ -195,6 +198,7 @@ const animatePath = async () => {
   }
 
   boardStore.isAnimating = false;
+  console.log(latestBoardState.value);
 };
 
 onUnmounted(() => {
