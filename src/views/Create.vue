@@ -5,7 +5,6 @@
       <p class="text-gray-400 text-sm">Put the obstacle inside the board</p>
     </header>
     <main class="flex flex-col items-center" ref="main">
-      <!-- <div class="space-y-3"> -->
       <div class="grid" :style="gridStyles">
         <!-- <TransitionGroup name="fade">
           <div
