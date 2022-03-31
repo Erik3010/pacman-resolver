@@ -6,21 +6,6 @@
     </header>
     <main class="flex flex-col items-center" ref="main">
       <div class="grid" :style="gridStyles">
-        <!-- <TransitionGroup name="fade">
-          <div
-            class="flex space-x-3"
-            v-for="(row, y) in boardStore.board"
-            :key="y"
-          >
-            <Box
-              v-for="(column, x) in row"
-              :key="x"
-              :coordinate="{ y, x }"
-              :item="column"
-              :style="{ transitionDelay: `${row.length * x * 0.01}s` }"
-            />
-          </div>
-        </TransitionGroup> -->
         <TransitionGroup name="fade">
           <Box
             v-for="(item, index) in boardGrid"
