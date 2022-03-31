@@ -19,13 +19,12 @@
         </TransitionGroup>
       </div>
     </main>
-    <Button
-      :classNames="['mx-auto', 'mt-12']"
-      @click="startResolve"
-      :disabled="disabledResolveButton"
-    >
-      {{ buttonText }}
-    </Button>
+    <div class="flex justify-center mt-12 space-x-6">
+      <Button @click="startResolve" :disabled="disabledResolveButton">
+        {{ buttonText }}
+      </Button>
+      <Button color="error" @click="startResolve">Reset Board</Button>
+    </div>
 
     <WheelMenu :visible="false" />
   </section>
@@ -184,6 +183,8 @@ const animatePath = async () => {
   boardStore.isAnimating = false;
   console.log(latestBoardState.value);
 };
+
+const resetBoard = () => {};
 
 onUnmounted(() => {
   boardStore.resetBoard();
