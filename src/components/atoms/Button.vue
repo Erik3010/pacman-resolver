@@ -7,7 +7,7 @@
 <script setup lang="ts">
 interface Props {
   classNames?: string[];
-  color: "primary" | "error";
+  color?: "primary" | "error";
 }
 
 const props = withDefaults(defineProps<Props>(), {
