@@ -23,7 +23,9 @@
       <Button @click="startResolve" :disabled="disabledResolveButton">
         {{ buttonText }}
       </Button>
-      <Button color="error" @click="startResolve">Reset Board</Button>
+      <Button color="error" :disabled="!isPathResolved" @click="resetBoard"
+        >Reset Board</Button
+      >
     </div>
 
     <WheelMenu :visible="false" />
@@ -52,6 +54,7 @@ import { BoardItem } from "@/types/BoardItem";
 const TRANSITION_DELAY = 0.1;
 const MS_TO_SECOND = 1000;
 const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
+const isPathResolved = ref(false);
 
 const router = useRouter();
 const boardStore = useBoard();
@@ -181,10 +184,13 @@ const animatePath = async () => {
   }
 
   boardStore.isAnimating = false;
-  console.log(latestBoardState.value);
+  isPathResolved.value = true;
 };
 
-const resetBoard = () => {};
+const resetBoard = () => {
+  boardStore.board = latestBoardState.value;
+  isPathResolved.value = false;
+};
 
 onUnmounted(() => {
   boardStore.resetBoard();
