@@ -23,9 +23,9 @@
       <Button @click="startResolve" :disabled="disabledResolveButton">
         {{ buttonText }}
       </Button>
-      <Button color="error" :disabled="!isPathResolved" @click="resetBoard"
-        >Reset Board</Button
-      >
+      <Button color="error" :disabled="!isPathResolved" @click="resetBoard">
+        Reset Board
+      </Button>
     </div>
 
     <WheelMenu :visible="false" />
