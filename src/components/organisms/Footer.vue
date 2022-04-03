@@ -5,7 +5,7 @@
     Build by
     <a
       target="_blank"
-      class="hover:underline hover:underline-offset-2 hover:text-gray-300"
+      class="hover:text-gray-300 hover:underline hover:underline-offset-2"
       href="https://github.com/Erik3010"
     >
       Erik3010
