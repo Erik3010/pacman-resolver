@@ -37,7 +37,7 @@
         </svg>
       </div>
       <div>
-        <h4 class="text-base text-white font-medium">
+        <h4 class="font-medium text-base text-white">
           {{ notificationStore.title }}
         </h4>
         <p
