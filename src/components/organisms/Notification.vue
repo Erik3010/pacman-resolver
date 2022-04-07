@@ -2,7 +2,7 @@
   <SlideTransition>
     <div
       v-if="notificationStore.isShow"
-      class="fixed top-8 right-8 z-50 bg-gray-800 rounded-md shadow-2xl border border-gray-700 inline-flex items-start p-4"
+      class="fixed top-8 right-8 z-50 bg-gray-800 rounded-md border border-gray-700 inline-flex items-start p-4 shadow-2xl"
     >
       <div class="mr-3">
         <svg
