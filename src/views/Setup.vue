@@ -6,7 +6,7 @@
     </header>
     <form class="flex flex-col items-center mt-16" @submit.prevent>
       <div
-        class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-7"
+        class="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-7"
       >
         <TextField
           label="Column"
