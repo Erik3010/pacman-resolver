@@ -1,6 +1,6 @@
 <template>
   <section class="max-w-2xl w-full mx-auto text-center">
-    <h1 class="font-bold text-5xl mb-2 sm:text-7xl">
+    <h1 class="text-5xl font-bold mb-2 sm:text-7xl">
       Pacman
       <span
         class="bg-gradient-to-br from-cyan-500 to-blue-600 text-transparent bg-clip-text"
