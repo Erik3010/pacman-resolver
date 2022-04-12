@@ -1,6 +1,6 @@
 <template>
   <section>
-    <header class="text-center mb-12">
+    <header class="mb-12 text-center">
       <h1 class="font-bold text-3xl mb-1">Setup your Board</h1>
       <p class="text-gray-400 text-sm">Put the obstacle inside the board</p>
     </header>
