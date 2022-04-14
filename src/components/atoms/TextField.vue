@@ -7,7 +7,7 @@
     >
       {{ label }}
     </label>
-    <div class="relative flex items-center group">
+    <div class="group relative flex items-center">
       <div class="input__prefix-icon absolute left-3">
         <slot name="prefix-icon" />
       </div>
