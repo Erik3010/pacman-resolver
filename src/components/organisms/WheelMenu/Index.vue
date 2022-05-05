@@ -24,7 +24,7 @@
           </WheelMenuItem>
         </div>
         <div
-          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 w-20 h-20 p-1.5 rounded-full shadow-md"
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-20 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 h-20 p-1.5 rounded-full shadow-md"
           @click="wheelItemHandler(BoardItem.EMPTY)"
         >
           <div
