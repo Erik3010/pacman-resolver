@@ -8,7 +8,7 @@
     >
       <div class="relative select-none">
         <div
-          class="grid grid-cols-2 grid-rows-2 w-52 h-52 bg-gray-900 border-2 border-blue-300 rounded-full transform rotate-45 overflow-hidden shadow-xl shadow-gray-900 divide-x divide-y divide-gray-700"
+          class="grid grid-cols-2 grid-rows-2 w-52 h-52 bg-gray-900 border-2 border-blue-300 rounded-full transform rotate-45 shadow-xl shadow-gray-900 divide-x divide-y divide-gray-700 overflow-hidden"
         >
           <WheelMenuItem @click="wheelItemHandler(BoardItem.WALL)">
             <img src="@/assets/wall.png" class="w-9 h-9" />
