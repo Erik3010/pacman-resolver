@@ -4,7 +4,7 @@
     @click="emit('click')"
   >
     <div
-      class="absolute flex justify-center items-center w-full h-full transform -rotate-45 text-2xl select-none"
+      class="absolute flex justify-center items-center w-full h-full text-2xl transform -rotate-45 select-none"
     >
       <slot />
     </div>
